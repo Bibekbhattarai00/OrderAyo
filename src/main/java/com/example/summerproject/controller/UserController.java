@@ -2,6 +2,7 @@ package com.example.summerproject.controller;
 
 import com.example.summerproject.controller.basecontroller.BaseController;
 import com.example.summerproject.dto.request.AuthenticationDto;
+import com.example.summerproject.dto.request.PasswordResetDto;
 import com.example.summerproject.dto.request.UserDto;
 import com.example.summerproject.entity.UserEntity;
 import com.example.summerproject.exception.CustomMessageSource;
@@ -10,11 +11,13 @@ import com.example.summerproject.exception.NotFoundException;
 import com.example.summerproject.geneericresponse.GenericResponse;
 import com.example.summerproject.jwt.JwtService;
 import com.example.summerproject.repo.UserEntityRepo;
+import com.example.summerproject.service.PasswordResetService;
 import com.example.summerproject.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,6 +38,7 @@ public class UserController extends BaseController {
     private final JwtService jwtService;
     private final UserEntityRepo userEntityRepo;
     private final AuthenticationManager authenticationManager;
+    private final PasswordResetService passwordResetService;
 
     @Operation(summary = "Add Users", description = "Add users and provide them Roles")
     @ApiResponses(value = {
@@ -71,4 +75,21 @@ public class UserController extends BaseController {
             return errorResponse(messageSource.get(ExceptionMessages.INVALID_CREDENTIALS.getCode()));
         }
     }
+    @Operation(summary = "Reset User's password" ,description = "reset users password based on authentication token")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200" ,description = "Password reset Success"),
+            @ApiResponse(responseCode = "404" ,description = "User Not found"),
+            @ApiResponse(responseCode = "500" ,description = "internal server error"),
+            @ApiResponse(responseCode = "403" ,description = "Forbidden"),
+    })
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_STAFF')")
+    @PostMapping("/reset")
+    public GenericResponse<String> reset(HttpServletRequest request, @RequestBody PasswordResetDto passwordResetDto) {
+        return GenericResponse.<String>builder()
+                .success(true)
+                .message("password changed")
+                .data(passwordResetService.requestReset(request, passwordResetDto))
+                .build();
+    }
+
 }
