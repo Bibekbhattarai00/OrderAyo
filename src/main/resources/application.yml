@@ -19,6 +19,18 @@ spring:
       max-file-size: 200MB
       max-request-size: 215MB
 
+  mail:
+      host: smtp.gmail.com
+      port: 587
+      username: bibek.bhattarai831@gmail.com
+      password: bppd jkwk krrf lccv
+      properties:
+        mail:
+         smtp:
+          auth: true
+          starttls:
+            enable: true
+
 mybatis:
-    configuration:
-      map-underscore-to-camel-case: true
+  configuration:
+    map-underscore-to-camel-case: true  #converts underscore of db into camelcase
