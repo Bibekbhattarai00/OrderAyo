@@ -4,6 +4,7 @@ import com.example.summerproject.controller.basecontroller.BaseController;
 import com.example.summerproject.dto.request.AuthenticationDto;
 import com.example.summerproject.dto.request.PasswordResetDto;
 import com.example.summerproject.dto.request.UserDto;
+import com.example.summerproject.dto.response.UserResponseDto;
 import com.example.summerproject.entity.UserEntity;
 import com.example.summerproject.exception.CustomMessageSource;
 import com.example.summerproject.exception.ExceptionMessages;
@@ -19,14 +20,15 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.annotations.Delete;
+import org.hibernate.dialect.LobMergeStrategy;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequestMapping("/admin/user")
 @RequiredArgsConstructor
@@ -90,6 +92,43 @@ public class UserController extends BaseController {
                 .message("password changed")
                 .data(passwordResetService.requestReset(request, passwordResetDto))
                 .build();
+    }
+
+    @Operation(summary = "get Users", description = "get users registered in the system")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Users fetched"),
+            @ApiResponse(responseCode = "500", description = "internal server error"),
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
+    })
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @GetMapping("/get-user")
+    public GenericResponse<List<UserResponseDto>> getUser() {
+        return successResponse(userService.getUser(), messageSource.get(ExceptionMessages.SUCCESS.getCode()));
+    }
+
+
+    @Operation(summary = "get User by username", description = "get users registered in the system by its username")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User fetched"),
+            @ApiResponse(responseCode = "500", description = "internal server error"),
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
+    })
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @GetMapping("/get-user-by-username")
+    public GenericResponse<UserResponseDto> getUser(String username) {
+        return successResponse(userService.getUserById(username), messageSource.get(ExceptionMessages.SUCCESS.getCode()));
+    }
+
+    @Operation(summary = "get User by username and deactivate its status", description = "get users registered in the system by its username and deactivate its status")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User deactivated"),
+            @ApiResponse(responseCode = "500", description = "internal server error"),
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
+    })
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @DeleteMapping("/deactivate")
+    public GenericResponse<String> deactivateUser(Long id) {
+        return successResponse(userService.deleteUser(id), messageSource.get(ExceptionMessages.SUCCESS.getCode()));
     }
 
 }

@@ -1,18 +1,19 @@
 package com.example.summerproject.exception;
 
-public class TypeMismatch extends Exception{
+public class UnauthorizedAccessException extends Exception{
     String message;
+
 
     @Override
     public String toString() {
         return message;
     }
 
-    public TypeMismatch(String message) {
+    public UnauthorizedAccessException(String message) {
         this.message = message;
     }
 
-    public TypeMismatch() {
+    public UnauthorizedAccessException() {
         message = "Type Mismatched";
     }
 }

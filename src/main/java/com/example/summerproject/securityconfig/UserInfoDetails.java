@@ -1,7 +1,7 @@
 package com.example.summerproject.securityconfig;
 
 import com.example.summerproject.entity.UserEntity;
-import com.example.summerproject.entity.UserType;
+import com.example.summerproject.enums.UserType;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

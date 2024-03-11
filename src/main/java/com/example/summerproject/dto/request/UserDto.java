@@ -1,7 +1,5 @@
 package com.example.summerproject.dto.request;
 
-import com.example.summerproject.entity.UserType;
-import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -20,5 +18,6 @@ public class UserDto {
     String username;
     @NotNull(message = "password cannot be null")
     String password;
+    @NotNull(message = "User type Must Be Specified")
     String userType;
 }

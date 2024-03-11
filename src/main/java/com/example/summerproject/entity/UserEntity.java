@@ -2,13 +2,12 @@ package com.example.summerproject.entity;
 
 
 import com.example.summerproject.auditing.AuditingEntity;
+import com.example.summerproject.enums.UserType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.io.Serializable;
 
 @Getter
 @Setter
@@ -16,13 +15,14 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Entity
 @Table(name = "tbl_user")
-public class UserEntity extends AuditingEntity implements Serializable {
+public class UserEntity extends AuditingEntity {
     @Id
     @SequenceGenerator(name = "user_key" ,allocationSize = 1)
     @GeneratedValue(generator = "user_key" ,strategy = GenerationType.SEQUENCE)
     @Column(name="user_id")
-    Long userId;
+    Long id;
 
+    @Column(unique = true, columnDefinition = "citext")
     String username;
 
     String password;
