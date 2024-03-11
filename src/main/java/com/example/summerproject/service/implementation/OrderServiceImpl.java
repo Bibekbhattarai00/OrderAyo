@@ -1,5 +1,6 @@
 package com.example.summerproject.service.implementation;
 
+import ch.qos.logback.classic.Logger;
 import com.example.summerproject.dto.request.OrderDto;
 import com.example.summerproject.dto.request.OrderItemDto;
 import com.example.summerproject.dto.response.OrderResponseDto;
@@ -22,7 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.temporal.Temporal;
+import java.time.ZoneId;
 import java.util.*;
 
 
@@ -100,10 +101,13 @@ public class OrderServiceImpl implements OrdersService {
 
 
     @Scheduled(cron = "0 30 20 * * *")
-    public void sendPendingOrderReminderEmail() {
-        Optional<List<OrderEntity>> pendingOrders = orderRepo.findByOrderStatus("PENDING");
 
-        if (pendingOrders.isPresent()){
+//    @Scheduled(cron = "0 45 23 * * *")
+//    @Scheduled(fixedRate = 500)
+    public void sendPendingOrderReminderEmail() {
+        Optional<List<OrderEntity>> pendingOrders = orderRepo.findByOrderStatus(OrderStatus.PENDING);
+
+        if (pendingOrders.isPresent()) {
             List<OrderEntity> orders = pendingOrders.get();
 
             for (OrderEntity order : orders) {
@@ -114,11 +118,14 @@ public class OrderServiceImpl implements OrdersService {
                 }
             }
 
+        } else {
+            System.out.println("No pending orders");
+        }
     }
+private boolean is24HoursPassed(Date createdDate) {
+    LocalDateTime createdDateTime = createdDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+    LocalDateTime now = LocalDateTime.now();
+    return Duration.between(createdDateTime, now).toHours() > 24;
 }
-    private boolean is24HoursPassed(Date createdDate) {
-        LocalDateTime now = LocalDateTime.now();
-        return Duration.between((Temporal) createdDate, now).toHours() > 24;
-    }
 
 }
