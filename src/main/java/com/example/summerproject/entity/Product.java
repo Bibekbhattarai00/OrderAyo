@@ -1,12 +1,12 @@
 package com.example.summerproject.entity;
 
 import com.example.summerproject.auditing.AuditingEntity;
+import com.example.summerproject.enums.ProdType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.io.Serializable;
 
 
 @Entity
@@ -15,14 +15,14 @@ import java.io.Serializable;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Product extends AuditingEntity implements Serializable  {
+public class Product extends AuditingEntity  {
     @Id
-    @SequenceGenerator(name = "product_key" ,allocationSize = 100)
+    @SequenceGenerator(name = "product_key" ,allocationSize = 1)
     @GeneratedValue(generator = "product_key" ,strategy = GenerationType.SEQUENCE)
             @Column(name="prod_id")
-    Long prodId;
+    Long id;
 
-    @Column(name = "name")
+    @Column(name = "name",unique = true, columnDefinition = "citext")
     String name;
 
     @Column(name = "stock")

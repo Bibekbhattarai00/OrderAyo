@@ -1,5 +1,6 @@
 package com.example.summerproject.auditing;
 
+import com.example.summerproject.generic.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
@@ -25,7 +26,7 @@ import static jakarta.persistence.TemporalType.TIMESTAMP;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuditingEntity implements Serializable {
+public abstract class AuditingEntity implements BaseEntity {
     @CreatedDate
     @Temporal(TIMESTAMP)
     @JsonFormat(pattern = "yyyy-mm-dd")
