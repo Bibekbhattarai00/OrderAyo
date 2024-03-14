@@ -19,4 +19,5 @@ public class ResetTokenEntity extends AuditingEntity {
     Long id;
     String username;
     String token;
+    boolean deleted= Boolean.FALSE;
 }

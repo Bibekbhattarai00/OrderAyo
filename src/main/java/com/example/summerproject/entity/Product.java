@@ -35,5 +35,5 @@ public class Product extends AuditingEntity  {
 
     Long cost_price;
 
-    boolean deleted= false;
+    boolean deleted= Boolean.FALSE;
 }

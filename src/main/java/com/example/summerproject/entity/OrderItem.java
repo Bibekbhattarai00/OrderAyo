@@ -28,4 +28,5 @@ public class OrderItem extends AuditingEntity {
     Product product;
 
     Long quantity;
+    boolean deleted= Boolean.FALSE;
 }

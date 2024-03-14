@@ -30,7 +30,5 @@ public class UserEntity extends AuditingEntity {
     @Column(name = "user_type")
     @Enumerated(EnumType.STRING)
     UserType userType;
-
-    boolean deleted=false;
-
+    boolean deleted= Boolean.FALSE;
 }

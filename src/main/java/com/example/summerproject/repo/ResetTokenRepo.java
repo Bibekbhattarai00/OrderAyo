@@ -1,13 +1,14 @@
 package com.example.summerproject.repo;
 
 import com.example.summerproject.entity.ResetTokenEntity;
+import com.example.summerproject.generic.GenericSoftDeleteRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
-public interface ResetTokenRepo extends JpaRepository<ResetTokenEntity, Long> {
+public interface ResetTokenRepo extends GenericSoftDeleteRepository<ResetTokenEntity, Long> {
     Optional<ResetTokenEntity> findByUsername(String email);
 
     @Modifying

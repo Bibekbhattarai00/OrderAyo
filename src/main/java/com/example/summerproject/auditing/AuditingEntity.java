@@ -42,4 +42,6 @@ public abstract class AuditingEntity implements BaseEntity {
 
     @CreatedBy
     String createdBy;
+
+
 }
