@@ -1,8 +1,11 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/orderManagement
-    username: postgres
-    password: 1234
+#    url: jdbc:postgresql://localhost:5432/orderManagement
+    url: jdbc:postgresql://dpg-cnsr4r779t8c73a839og-a.singapore-postgres.render.com/orderayo
+#    username: postgres
+    username: orderayo_user
+#    password: 1234
+    password: Aj7PLYJ4emajF6nN7CzW2iduczX7yNYz
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
