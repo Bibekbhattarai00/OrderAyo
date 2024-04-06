@@ -1,9 +1,8 @@
 package com.example.summerproject.repo;
 
 import com.example.summerproject.entity.Product;
-import com.example.summerproject.generic.GenericSoftDeleteRepository;
+import com.example.summerproject.generic.repo.GenericSoftDeleteRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 

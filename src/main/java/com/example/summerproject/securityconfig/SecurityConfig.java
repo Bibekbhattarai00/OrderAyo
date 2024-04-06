@@ -87,7 +87,7 @@ public class SecurityConfig {
     @Bean
     public CorsFilter corsFilter(){
         CorsConfiguration configuration=new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173","https://book-rental.netlify.app/"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173","https://kicks-sneaker-store.netlify.app/"));
         configuration.addAllowedHeader("*");
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         UrlBasedCorsConfigurationSource source=new UrlBasedCorsConfigurationSource();
