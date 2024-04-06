@@ -32,4 +32,6 @@ public class OrderEntity extends AuditingEntity {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     List<OrderItem> orderItems = new ArrayList<>();
+
+    boolean deleted= Boolean.FALSE;
 }

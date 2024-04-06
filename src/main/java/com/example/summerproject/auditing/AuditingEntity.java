@@ -1,6 +1,6 @@
 package com.example.summerproject.auditing;
 
-import com.example.summerproject.generic.BaseEntity;
+import com.example.summerproject.generic.entity.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
@@ -15,7 +15,6 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import static jakarta.persistence.TemporalType.TIMESTAMP;
@@ -42,4 +41,6 @@ public abstract class AuditingEntity implements BaseEntity {
 
     @CreatedBy
     String createdBy;
+
+
 }

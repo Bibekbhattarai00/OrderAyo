@@ -67,6 +67,29 @@ public interface OrderMapper {
     List<OrderResponseDto> getOrdersWithProductsByCustomer(@Param("customerContact") String customerContact);
 
 
+    @Select("SELECT DISTINCT to2.id as orderId, " +
+            "   to2.customer_name AS customerName, " +
+            "   to2.customer_contact AS customerContact, " +
+            "   SUM(tp.selling_price * op.quantity) OVER (PARTITION BY to2.id) AS total " +
+            "FROM " +
+            "   tbl_orders to2 " +
+            "INNER JOIN " +
+            "   order_products op ON to2.id = op.order_id " +
+            "INNER JOIN " +
+            "   tbl_products tp ON tp.prod_id = op.product_id " +
+            "WHERE " +
+            "   to2.id = #{OrderId} " +
+            "   AND to2.order_status = 'PENDING'")
+    @Results({
+            @Result(property = "orderId", column = "orderId"),
+            @Result(property = "customerName", column = "customerName"),
+            @Result(property = "customerContact", column = "customerContact"),
+            @Result(property = "products", column = "orderId", javaType = List.class, many = @Many(select = "getProductsForOrder")),
+            @Result(property = "total", column = "total"),
+    })
+    OrderResponseDto getOrderDetailsById(@Param("OrderId") Long orderId);
+
+
     @Select(" SELECT DISTINCT to2.id as orderId, " +
             "   to2.customer_name AS customerName, " +
             "   to2.customer_contact AS customerContact, " +

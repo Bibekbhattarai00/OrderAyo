@@ -1,0 +1,39 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/orderManagement
+#    url: jdbc:postgresql://dpg-cnsr4r779t8c73a839og-a.singapore-postgres.render.com/orderayo
+    username: postgres
+#    username: orderayo_user
+    password: 1234
+#    password: Aj7PLYJ4emajF6nN7CzW2iduczX7yNYz
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 200MB
+      max-request-size: 215MB
+
+  mail:
+      host: smtp.gmail.com
+      port: 587
+      username: bibek.bhattarai831@gmail.com
+      password: bppd jkwk krrf lccv
+      properties:
+        mail:
+         smtp:
+          auth: true
+          starttls:
+            enable: true
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true  #converts underscore of db into camelcase
