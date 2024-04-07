@@ -111,6 +111,7 @@ public class OrderServiceImpl implements OrdersService {
         OrderEntity order = orderRepo.findById(id)
                 .orElseThrow(() -> new NotFoundException(messageSource.get(ExceptionMessages.NOT_FOUND.getCode())));
         order.setOrderStatus(OrderStatus.DISPATCHED);
+        order.setDeleted(true);
         orderRepo.save(order);
         return messageSource.get(ExceptionMessages.SUCCESS.getCode());
     }

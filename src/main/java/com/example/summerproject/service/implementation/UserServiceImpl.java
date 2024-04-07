@@ -42,13 +42,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserResponseDto> getUser() {
-        GetUserRole.checkAuthority();
         return userMapper.getAllUser();
     }
 
     @Override
     public String deleteUser(Long id) {
-        GetUserRole.checkAuthority();
         UserEntity user = userRepo.findById(id)
                 .orElseThrow(() -> new NotFoundException(messageSource.get(ExceptionMessages.NOT_FOUND.getCode())));
         user.setDeleted(true);
@@ -58,7 +56,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDto getUserById(String username) {
-        GetUserRole.checkAuthority();
         UserResponseDto userResponseDto = userMapper.getUser(username);
         if (userResponseDto != null) {
             return userResponseDto;

@@ -17,9 +17,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EntityScan
 @EnableScheduling
 @OpenAPIDefinition(info = @Info(title = "Order Ayo rental API", version = "1.0", description = "Allows the Shop owner to keep track of the sales and Transactions associated with it.")
-//        , servers = {@Server(url = "", description = "Deployed Server URL"),
-//        @Server(url = "http://localhost:8080", description = "Local Server URL")
-//}
+        , servers = {@Server(url = "https://orderayo.onrender.com/", description = "Deployed Server URL"),
+        @Server(url = "http://localhost:8080", description = "Local Server URL")
+}
 )
 @SecurityScheme(name = "SummerProject", scheme = "bearer", type = SecuritySchemeType.HTTP, in = SecuritySchemeIn.HEADER)
 public class SummerProjectApplication {

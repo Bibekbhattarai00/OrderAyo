@@ -59,6 +59,16 @@ public class OrderController extends BaseController {
         return successResponse(ordersService.viewPendingOrders(),"All pending orders");
     }
 
+    @Operation(summary = "Dispatch order orders", description = "Dispatch orders by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "dispatch Success"),
+            @ApiResponse(responseCode = "500", description = "internal server error")
+    })
+    @DeleteMapping("/dispatch-orders")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_STAFF')")
+    public GenericResponse<String>  dispatchOrdersById(@RequestParam Long id){
+        return successResponse(ordersService.dispatchOrder(id),"dispatch orders");
+    }
 
     @Operation(summary = "View orders by PhoneNo", description = "view pending orders by customer phoneNo")
     @ApiResponses(value = {
@@ -70,6 +80,7 @@ public class OrderController extends BaseController {
     public GenericResponse<List<OrderResponseDto>>  viewPendingOrders(@RequestParam String phone){
         return successResponse(ordersService.viewOrderByCustomer(phone),"All pending orders of the customer " + phone);
     }
+
     @Operation(summary = "Get bill", description = "get bill and print bill")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "getBill and print bill"),
