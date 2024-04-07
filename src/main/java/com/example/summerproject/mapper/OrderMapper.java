@@ -18,7 +18,7 @@ public interface OrderMapper {
             "   order_products op ON to2.id = op.order_id " +
             "INNER JOIN " +
             "   tbl_products tp ON tp.prod_id = op.product_id " +
-            "WHERE " +
+            "WHERE to2.deleted =false and " +
             "   to2.order_status = 'PENDING'")
     @Results({
             @Result(property = "orderId", column = "orderId"),
@@ -54,7 +54,7 @@ public interface OrderMapper {
             "   order_products op ON to2.id = op.order_id " +
             "INNER JOIN " +
             "   tbl_products tp ON tp.prod_id = op.product_id " +
-            "WHERE " +
+            "WHERE to2.deleted =false and " +
             "   to2.customer_contact = #{customerContact} " +
             "   AND to2.order_status = 'PENDING'")
     @Results({
@@ -77,7 +77,7 @@ public interface OrderMapper {
             "   order_products op ON to2.id = op.order_id " +
             "INNER JOIN " +
             "   tbl_products tp ON tp.prod_id = op.product_id " +
-            "WHERE " +
+            "WHERE to2.deleted =false and " +
             "   to2.id = #{OrderId} " +
             "   AND to2.order_status = 'PENDING'")
     @Results({
@@ -90,7 +90,7 @@ public interface OrderMapper {
     OrderResponseDto getOrderDetailsById(@Param("OrderId") Long orderId);
 
 
-    @Select(" SELECT DISTINCT to2.id as orderId, " +
+    @Select(" SELECT DISTINCT to2.id as orderId, to2.created_date as orderDate," +
             "   to2.customer_name AS customerName, " +
             "   to2.customer_contact AS customerContact, " +
             "   SUM(tp.selling_price * op.quantity) OVER (PARTITION BY to2.id) AS total " +
@@ -100,7 +100,7 @@ public interface OrderMapper {
             "   order_products op ON to2.id = op.order_id " +
             "INNER JOIN " +
             "   tbl_products tp ON tp.prod_id = op.product_id " +
-            "WHERE " +
+            "WHERE to2.deleted =true and" +
             "   to2.order_status = 'DISPATCHED'")
     @Results({
             @Result(property = "orderId", column = "orderId"),

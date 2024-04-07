@@ -17,6 +17,7 @@ import com.example.summerproject.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,7 @@ import java.util.List;
 @RequestMapping("/admin/user")
 @RequiredArgsConstructor
 @RestController
+@SecurityRequirement(name = "SummerProject")
 @Tag(name = "User controller", description = "Manages APIs for Login, Creating user,Reset password,Deactivate account")
 public class UserController extends BaseController {
     private final UserService userService;
