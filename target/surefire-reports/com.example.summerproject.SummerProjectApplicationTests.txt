@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.example.summerproject.SummerProjectApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.094 s -- in com.example.summerproject.SummerProjectApplicationTests
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 12.78 s -- in com.example.summerproject.SummerProjectApplicationTests
