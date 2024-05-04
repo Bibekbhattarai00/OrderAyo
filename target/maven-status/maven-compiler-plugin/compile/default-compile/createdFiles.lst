@@ -49,6 +49,7 @@ com\example\summerproject\enums\UserType.class
 com\example\summerproject\enums\ProdType.class
 com\example\summerproject\service\implementation\PasswordResetServiceImpl.class
 com\example\summerproject\utils\ExcelGenerator.class
+com\example\summerproject\dto\request\DateRequestDto.class
 com\example\summerproject\generic\entity\BaseEntity.class
 com\example\summerproject\exception\GlobalExceptionHandler.class
 com\example\summerproject\service\OrdersService.class
@@ -77,6 +78,7 @@ com\example\summerproject\enums\OrderStatus.class
 com\example\summerproject\utils\NullValues.class
 com\example\summerproject\service\ProductService.class
 com\example\summerproject\service\UserService.class
+com\example\summerproject\dto\request\ProductFilterRequestDto.class
 com\example\summerproject\entity\UserEntity.class
 com\example\summerproject\exception\NotFoundException.class
 com\example\summerproject\service\implementation\ProductServiceImpl.class

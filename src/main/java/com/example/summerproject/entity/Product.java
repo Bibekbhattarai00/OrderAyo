@@ -15,14 +15,14 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Product extends AuditingEntity  {
+public class Product extends AuditingEntity {
     @Id
-    @SequenceGenerator(name = "product_key" ,allocationSize = 1)
-    @GeneratedValue(generator = "product_key" ,strategy = GenerationType.SEQUENCE)
-            @Column(name="prod_id")
+    @SequenceGenerator(name = "product_key", allocationSize = 1)
+    @GeneratedValue(generator = "product_key", strategy = GenerationType.SEQUENCE)
+    @Column(name = "prod_id")
     Long id;
 
-    @Column(name = "name",unique = true, columnDefinition = "citext")
+    @Column(name = "name", unique = true, columnDefinition = "citext")
     String name;
 
     @Column(name = "stock")
@@ -31,9 +31,10 @@ public class Product extends AuditingEntity  {
     @Enumerated(EnumType.STRING)
     ProdType prodType;
 
-    Long selling_price;
+    Long sellingPrice;
 
-    Long cost_price;
+    Long costPrice;
+    String image;
 
-    boolean deleted= Boolean.FALSE;
+    boolean deleted = Boolean.FALSE;
 }
