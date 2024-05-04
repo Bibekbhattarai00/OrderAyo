@@ -1,5 +1,6 @@
 package com.example.summerproject.service.implementation;
 
+import com.example.summerproject.dto.request.DateRequestDto;
 import com.example.summerproject.dto.request.OrderDto;
 import com.example.summerproject.dto.request.OrderItemDto;
 import com.example.summerproject.dto.response.OrderResponseDto;
@@ -15,7 +16,6 @@ import com.example.summerproject.mapper.OrderMapper;
 import com.example.summerproject.repo.OrderRepo;
 import com.example.summerproject.repo.ProductRepo;
 import com.example.summerproject.service.OrdersService;
-import com.example.summerproject.utils.ExcelGenerator;
 import com.example.summerproject.utils.MailUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itextpdf.text.*;
@@ -31,20 +31,15 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.*;
 import java.util.List;
-import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
-
-import static com.example.summerproject.utils.ExcelGenerator.generateExcel;
 
 
 @Service
@@ -96,6 +91,7 @@ public class OrderServiceImpl implements OrdersService {
         return messageSource.get(ExceptionMessages.SUCCESS.getCode());
     }
 
+
     @Override
     public List<OrderResponseDto> viewPendingOrders() {
         return orderMapper.getOrdersWithProducts();
@@ -127,7 +123,7 @@ public class OrderServiceImpl implements OrdersService {
     }
 
 
-    public String generateBill(Long orderId,HttpServletResponse response) throws IOException, DocumentException {
+    public String generateBill(Long orderId, HttpServletResponse response) throws IOException, DocumentException {
 
 
         OrderResponseDto order = getOrderDetailsById(orderId);
@@ -250,7 +246,7 @@ public class OrderServiceImpl implements OrdersService {
             data.createCell(1).setCellValue(orders.getCustomerName());
             data.createCell(2).setCellValue(orders.getCustomerContact());
             List<ProdnameResponseDto> products = orders.getProducts();
-            for(ProdnameResponseDto prod:products) {
+            for (ProdnameResponseDto prod : products) {
                 data.createCell(3).setCellValue(prod.getProductName());
                 data.createCell(4).setCellValue(prod.getQuantity());
                 data.createCell(5).setCellValue(prod.getPrice());
@@ -269,5 +265,16 @@ public class OrderServiceImpl implements OrdersService {
         out.close();
         return messageSource.get(ExceptionMessages.DOWNLOADED.getCode());
     }
+
+    @Override
+    public Map<String, Object> getSalesReport(DateRequestDto dateRequestDto) {
+        return orderRepo.getSalesReport(dateRequestDto.getFrom(), dateRequestDto.getTo());
+    }
+
+    @Override
+    public Map<String, Object> getBestSellers(DateRequestDto dateRequestDto) {
+        return orderRepo.getBestSeller(dateRequestDto.getFrom(), dateRequestDto.getTo());
+    }
+
 
 }

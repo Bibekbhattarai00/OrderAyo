@@ -14,7 +14,7 @@ public interface UserMapper {
     UserResponseDto getUser(String username);
 
 
-    @Select("select tu.user_id , tu.username as Email ,tu.modified_by as AddedBy , tu.user_type as Role \n" +
+    @Select("select tu.user_id as id, tu.username as Email ,tu.modified_by as AddedBy , tu.user_type as Role \n" +
             "from tbl_user tu where tu.deleted=false")
     List<UserResponseDto> getAllUser();
 }

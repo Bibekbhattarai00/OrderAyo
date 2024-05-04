@@ -11,6 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class UserResponseDto {
+    Long id;
     String email;
     String role;
     String addedBy;

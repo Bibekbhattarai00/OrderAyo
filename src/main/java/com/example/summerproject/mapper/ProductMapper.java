@@ -2,21 +2,35 @@ package com.example.summerproject.mapper;
 
 import com.example.summerproject.dto.response.ProductResponseDto;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 @Mapper
 public interface ProductMapper {
-    @Select("select tp.prod_id as prodId , tp.created_by as modifiedBy ,tp.\"name\" as prodName , tp.cost_price as CostPrice, \n" +
-            "tp.selling_price as SellingPrice ,tp.prod_type as prod_type ,tp.stock as AvailableStock\n" +
-            "from tbl_products tp where tp.deleted =false")
-    List<ProductResponseDto> getAllProducts();
+    @Select("SELECT tp.prod_id AS prodId, \n" +
+            "       tp.created_by AS modifiedBy, \n" +
+            "       tp.\"name\" AS prodName, \n" +
+            "       tp.cost_price AS costPrice, \n" +
+            "       tp.selling_price AS sellingPrice, \n" +
+            "       tp.prod_type AS prodType, \n" +
+            "       tp.stock AS availableStock\n" +
+            "FROM tbl_products tp \n" +
+            "WHERE tp.deleted = false \n" +
+            "AND (tp.prod_type = COALESCE(#{type}, tp.prod_type))\n" +
+            "AND (\n" +
+            "    CASE \n" +
+            "        WHEN #{name} = '-1' THEN TRUE\n" +
+            "        ELSE (tp.\"name\" LIKE CONCAT('%', #{name}, '%'))\n" +
+            "    END\n" +
+            ")\n")
+    List<ProductResponseDto> getAllProducts(@Param("name") String name, @Param("type") String type , Pageable pageable);
 
     @Select("select tp.prod_id as prodId , tp.created_by as modifiedBy ,tp.\"name\" as prodName , tp.cost_price as CostPrice, \n" +
             "tp.selling_price as SellingPrice ,tp.prod_type as prodType ,tp.stock as AvailableStock\n" +
             "from tbl_products tp where tp.deleted =false and tp.name =#{name}")
     ProductResponseDto getByName(String name);
-
 
 }

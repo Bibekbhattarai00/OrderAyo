@@ -2,6 +2,7 @@ package com.example.summerproject.controller;
 
 
 import com.example.summerproject.controller.basecontroller.BaseController;
+import com.example.summerproject.dto.request.DateRequestDto;
 import com.example.summerproject.dto.request.OrderDto;
 import com.example.summerproject.dto.response.OrderResponseDto;
 import com.example.summerproject.geneericresponse.GenericResponse;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -102,4 +104,29 @@ public class OrderController extends BaseController {
     public GenericResponse<String> getExcel(HttpServletResponse response) throws IOException, IllegalAccessException {
         return successResponse(ordersService.getExcel(response),"excelSheet downloaded");
     }
+
+    @Operation(summary = "get sales Report", description = "gat report")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "All pending orders fetched"),
+            @ApiResponse(responseCode = "500", description = "internal server error")
+    })
+    @PostMapping("/get-sales-report")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_STAFF')")
+    public GenericResponse<Map<String,Object>>  viewPendingOrders(@RequestBody DateRequestDto dateRequestDto){
+        return successResponse(ordersService.getSalesReport(dateRequestDto),"sales report");
+    }
+
+
+    @Operation(summary = "get best sellers", description = "get best sellers")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "All pending orders fetched"),
+            @ApiResponse(responseCode = "500", description = "internal server error")
+    })
+    @PostMapping("/get-best-sellers")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_STAFF')")
+    public GenericResponse<Map<String,Object>>  getBestSeller(@RequestBody DateRequestDto dateRequestDto){
+        return successResponse(ordersService.getBestSellers(dateRequestDto),"best sellers");
+    }
+
+
 }

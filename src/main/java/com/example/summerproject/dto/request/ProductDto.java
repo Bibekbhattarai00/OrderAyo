@@ -27,10 +27,10 @@ public class ProductDto {
 
     @Positive(message = "Selling Price cannot be Negative Or 0")
     @NotNull(message = "Selling price Cannot be empty")
-    Long selling_price;
+    Long sellingPrice;
 
     @Positive(message = "Cost Price cannot be Negative Or 0")
     @NotNull(message = "cost price Cannot be empty")
-    Long cost_price;
+    Long costPrice;
 
 }
