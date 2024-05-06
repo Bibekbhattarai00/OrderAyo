@@ -90,7 +90,7 @@ public class ProductServiceImpl implements ProductService {
     public Object findAllProduct(ProductFilterRequestDto requestDto) {
 //        return productMapper.getAllProducts(requestDto.getName(), requestDto.getProdType(),requestDto.getPageable());
         return customPagination.getPaginatedData(
-                productRepo.getAllProducts(requestDto.getName().trim(),requestDto.getProdType().trim(),requestDto.getPageable()));
+                productRepo.getAllProducts(requestDto.getName().trim(),requestDto.getProdType(),requestDto.getPageable()));
     }
 
     public static String saveImage(String path, MultipartFile file) throws IOException {
