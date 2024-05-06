@@ -2,8 +2,6 @@ package com.example.summerproject.controller.basecontroller;
 
 import com.example.summerproject.geneericresponse.GenericResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RestController;
 
 
 @SecurityRequirement(name = "SummerProject")
