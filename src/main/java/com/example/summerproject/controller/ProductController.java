@@ -89,7 +89,6 @@ public class ProductController extends BaseController {
             @ApiResponse(responseCode = "500", description = "internal server error")
     })
     @GetMapping("/get-image-by-id")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_LIBRARIAN')")
     public GenericResponse<String> getPhoto(@RequestParam Long id, HttpServletResponse response) throws IOException {
         productService.getImage(id,response);
         return successResponse("Book", "book id-:" + id + " details");
