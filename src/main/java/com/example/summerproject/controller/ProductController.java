@@ -92,7 +92,7 @@ public class ProductController extends BaseController {
         return successResponse(productService.deleteProduct(id), "products has been removed");
     }
 
-    @Operation(summary = "Get book image by id", description = "Fetch Book image based on  provided id")
+    @Operation(summary = "Get product image by id", description = "Fetch product image based on  provided id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Image found"),
             @ApiResponse(responseCode = "404", description = "Image not found"),
@@ -101,7 +101,20 @@ public class ProductController extends BaseController {
     })
     @GetMapping("/get-image-by-id")
     public GenericResponse<String> getPhoto(@RequestParam Long id, HttpServletResponse response) throws IOException {
-        productService.getImage(id, response);
-        return successResponse("Book", "book id-:" + id + " details");
+        productService.getImage(id,response);
+        return successResponse("Product", "Prod id-:" + id + " details");
+    }
+
+    @Operation(summary = "Get product image by id base 64", description = "Fetch product image based on  provided id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Image found"),
+            @ApiResponse(responseCode = "404", description = "Image not found"),
+            @ApiResponse(responseCode = "403", description = "Forbidden"),
+            @ApiResponse(responseCode = "500", description = "internal server error")
+    })
+    @GetMapping("/get-image-by-id-base64")
+    public GenericResponse<String> getPhotoBase64(@RequestParam Long id) throws IOException {
+//        productService.getImage(id);
+        return successResponse(productService.getImageBase64(id), "prod id-:" + id + " details");
     }
 }
