@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductResponseDto  extends  PaginationResponse{
+public class ProductResponseDto  {
     private Long prodId;
     private String prodName;
     private String modifiedBy;

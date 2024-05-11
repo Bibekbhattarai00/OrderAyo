@@ -11,6 +11,8 @@ public interface OrderMapper {
     @Select(" SELECT DISTINCT to2.id as orderId, " +
             "   to2.customer_name AS customerName, " +
             "   to2.customer_contact AS customerContact, " +
+            " to2.customer_email AS customerEmail ," +
+            " to2.address as address ," +
             "   SUM(tp.selling_price * op.quantity) OVER (PARTITION BY to2.id) AS total ," +
             " to2.created_date as orderDate " +
             " FROM " +
@@ -24,6 +26,8 @@ public interface OrderMapper {
     @Results({
             @Result(property = "orderId", column = "orderId"),
             @Result(property = "customerName", column = "customerName"),
+            @Result(property = "customerEmail", column = "customerEmail"),
+            @Result(property = "address", column = "address"),
             @Result(property = "customerContact", column = "customerContact"),
             @Result(property = "products", column = "orderId", javaType = List.class, many = @Many(select = "getProductsForOrder")),
             @Result(property = "total", column = "total"),
@@ -49,7 +53,10 @@ public interface OrderMapper {
     @Select("SELECT DISTINCT to2.id as orderId, " +
             "   to2.customer_name AS customerName, " +
             "   to2.customer_contact AS customerContact, " +
-            "   SUM(tp.selling_price * op.quantity) OVER (PARTITION BY to2.id) AS total " +
+            "   SUM(tp.selling_price * op.quantity) OVER (PARTITION BY to2.id) AS total ," +
+            " to2.created_date as orderDate ," +
+            "  to2.customer_email AS customerEmail ," +
+            " to2.address as address " +
             "FROM " +
             "   tbl_orders to2 " +
             "INNER JOIN " +
@@ -62,6 +69,8 @@ public interface OrderMapper {
     @Results({
             @Result(property = "orderId", column = "orderId"),
             @Result(property = "customerName", column = "customerName"),
+            @Result(property = "customerEmail", column = "customerEmail"),
+            @Result(property = "address", column = "address"),
             @Result(property = "customerContact", column = "customerContact"),
             @Result(property = "products", column = "orderId", javaType = List.class, many = @Many(select = "getProductsForOrder")),
             @Result(property = "total", column = "total"),
@@ -72,7 +81,10 @@ public interface OrderMapper {
     @Select("SELECT DISTINCT to2.id as orderId, " +
             "   to2.customer_name AS customerName, " +
             "   to2.customer_contact AS customerContact, " +
-            "   SUM(tp.selling_price * op.quantity) OVER (PARTITION BY to2.id) AS total " +
+            "   SUM(tp.selling_price * op.quantity) OVER (PARTITION BY to2.id) AS total, " +
+            " to2.created_date as orderDate, " +
+            "  to2.customer_email AS customerEmail, " +
+            " to2.address as address " +
             "FROM " +
             "   tbl_orders to2 " +
             "INNER JOIN " +
@@ -85,6 +97,8 @@ public interface OrderMapper {
     @Results({
             @Result(property = "orderId", column = "orderId"),
             @Result(property = "customerName", column = "customerName"),
+            @Result(property = "customerEmail", column = "customerEmail"),
+            @Result(property = "address", column = "address"),
             @Result(property = "customerContact", column = "customerContact"),
             @Result(property = "products", column = "orderId", javaType = List.class, many = @Many(select = "getProductsForOrder")),
             @Result(property = "total", column = "total"),
@@ -95,7 +109,10 @@ public interface OrderMapper {
     @Select(" SELECT DISTINCT to2.id as orderId, to2.created_date as orderDate," +
             "   to2.customer_name AS customerName, " +
             "   to2.customer_contact AS customerContact, " +
-            "   SUM(tp.selling_price * op.quantity) OVER (PARTITION BY to2.id) AS total " +
+            "   SUM(tp.selling_price * op.quantity) OVER (PARTITION BY to2.id) AS total, " +
+            " to2.created_date as orderDate, " +
+            "  to2.customer_email AS customerEmail, " +
+            " to2.address as address " +
             "FROM " +
             "   tbl_orders to2 " +
             "INNER JOIN " +
@@ -107,6 +124,8 @@ public interface OrderMapper {
     @Results({
             @Result(property = "orderId", column = "orderId"),
             @Result(property = "customerName", column = "customerName"),
+            @Result(property = "customerEmail", column = "customerEmail"),
+            @Result(property = "address", column = "address"),
             @Result(property = "customerContact", column = "customerContact"),
             @Result(property = "products", column = "orderId", javaType = List.class, many = @Many(select = "getProductsForOrder")),
             @Result(property = "total", column = "total"),

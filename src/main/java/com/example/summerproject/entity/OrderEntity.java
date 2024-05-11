@@ -26,12 +26,13 @@ public class OrderEntity extends AuditingEntity {
     String customerName;
 
     String customerContact;
-
+    String customerEmail;
+    String address;
     @Enumerated(EnumType.STRING)
     OrderStatus orderStatus;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     List<OrderItem> orderItems = new ArrayList<>();
 
-    boolean deleted= Boolean.FALSE;
+    boolean deleted = Boolean.FALSE;
 }

@@ -53,9 +53,21 @@ public class ProductController extends BaseController {
     })
     @PostMapping("/get-all-products")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_STAFF')")
-    public GenericResponse<Object> getAllProducts(ProductFilterRequestDto requestDto) {
+    public GenericResponse<Object> getAllProducts(@RequestBody ProductFilterRequestDto requestDto) {
         return successResponse(productService.findAllProduct(requestDto), messageSource.get(ExceptionMessages.SUCCESS.getCode()));
     }
+
+    @Operation(summary = "Get all Product", description = "Get all products in the Store")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Product added"),
+            @ApiResponse(responseCode = "500", description = "internal server error")
+    })
+    @PostMapping("/all-products-without-pagination")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_STAFF')")
+    public GenericResponse<List<ProductResponseDto>> getAllProducts() {
+        return successResponse(productService.getAllProductsWithoutPaginationReq(), messageSource.get(ExceptionMessages.SUCCESS.getCode()));
+    }
+
 
 
     @Operation(summary = "Get all Product", description = "Get all products in the Store")

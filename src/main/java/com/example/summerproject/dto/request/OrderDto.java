@@ -18,6 +18,8 @@ public class OrderDto {
 
     @NotNull( message = "Customer name cannot be Empty")
     String customerName;
+    String customerEmail;
+    String address;
 
     @Pattern(regexp = "^[0-9]{10}$",message = "invalid phone")
     @NotNull(message = "Mobile-No cannot be empty")

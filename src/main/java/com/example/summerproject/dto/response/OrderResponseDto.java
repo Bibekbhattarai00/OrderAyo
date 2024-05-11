@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -23,11 +24,15 @@ public class OrderResponseDto {
 
     String customerName;
 
+    String customerEmail;
+
+    String address;
+
     String customerContact;
 
     List<ProdnameResponseDto> products;
 
     Long total;
 
-    LocalDate orderDate;
+    LocalDateTime orderDate;
 }
