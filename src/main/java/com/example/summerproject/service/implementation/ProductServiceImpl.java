@@ -93,6 +93,11 @@ public class ProductServiceImpl implements ProductService {
                 productRepo.getAllProducts(requestDto.getName().trim(),requestDto.getProdType(),requestDto.getPageable()));
     }
 
+    @Override
+    public List<ProductResponseDto> getAllProductsWithoutPaginationReq() {
+        return productMapper.getAllProductsWithoutPaginationReq();
+    }
+
     public static String saveImage(String path, MultipartFile file) throws IOException {
         if (file == null) {
             throw new NotFoundException("photo is req");

@@ -62,6 +62,8 @@ public class OrderServiceImpl implements OrdersService {
         OrderEntity order = new OrderEntity();
         order.setCustomerName(orderDto.getCustomerName());
         order.setCustomerContact(orderDto.getCustomerContact());
+        order.setCustomerEmail(orderDto.getCustomerEmail());
+        order.setAddress(orderDto.getAddress());
         order.setOrderStatus(OrderStatus.PENDING);
 
         for (OrderItemDto orderItemDto : orderItemDtos) {
@@ -109,6 +111,29 @@ public class OrderServiceImpl implements OrdersService {
         order.setOrderStatus(OrderStatus.DISPATCHED);
         order.setDeleted(true);
         orderRepo.save(order);
+        if(order.getCustomerEmail()!=null) {
+            String emailBody = "Dear" + order.getCustomerName() + " " +
+                    "We're thrilled to inform you that your recent order with us has been dispatched and is on its way to you! Your satisfaction is our top priority, and we're committed to ensuring a smooth delivery experience for you.\n" +
+                    "\n" +
+                    "To track your order and stay updated on its status, you can now reach out to our trusted courier service, Nepal can Move, directly. They'll be happy to assist you with any inquiries you may have regarding the delivery process.\n" +
+                    "\n" +
+                    "Please provide them with your name and contact information, and they'll promptly provide you with the necessary details about your order's journey to your doorstep.\n" +
+                    "\n" +
+                    "Nepal Can Move\n" +
+                    "Phone: 9800000000\n" +
+                    "Email: Ncm123@gmail.com\n" +
+                    "\n" +
+                    "Should you have any further questions or concerns, feel free to reach out to us directly, and we'll be more than happy to assist you.\n" +
+                    "\n" +
+                    "Thank you for choosing us for your feet needs. We appreciate your trust in us and hope you enjoy your purchase!\n" +
+                    "\n" +
+                    "Best regards,\n" +
+                    "\n" +
+                    "Regina Chapagain\n" +
+                    "9811111111\n" +
+                    "Regina Shoe Store";
+            mailUtils.sendMail(order.getCustomerEmail(), "Order dispatched Notification", emailBody);
+        }
         return messageSource.get(ExceptionMessages.SUCCESS.getCode());
     }
 

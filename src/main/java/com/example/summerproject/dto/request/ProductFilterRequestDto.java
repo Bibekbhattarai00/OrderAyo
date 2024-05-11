@@ -1,8 +1,6 @@
 package com.example.summerproject.dto.request;
 
-import com.example.summerproject.enums.ProdType;
 import com.example.summerproject.generic.dto.PaginationRequest;
-import com.example.summerproject.generic.pagination.PaginationResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
