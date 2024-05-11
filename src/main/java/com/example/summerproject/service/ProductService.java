@@ -18,5 +18,8 @@ public interface ProductService {
     public ProductResponseDto findProductByType(String prodName);
     Object findAllProduct(ProductFilterRequestDto requestDto);
     List<ProductResponseDto> getAllProductsWithoutPaginationReq();
-    public void getImage(Long id, HttpServletResponse response) throws IOException ;
+//    public String getImage(Long id, HttpServletResponse response) throws IOException ;
+    public String getImageBase64(Long id) throws IOException ;
+
+    public void getImage(Long id, HttpServletResponse response) throws IOException;
 }

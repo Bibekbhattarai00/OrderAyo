@@ -124,7 +124,7 @@ public class OrderController extends BaseController {
     })
     @PostMapping("/get-best-sellers")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_STAFF')")
-    public GenericResponse<Map<String,Object>>  getBestSeller(@RequestBody DateRequestDto dateRequestDto){
+    public GenericResponse<List<Map<String,Object>>>  getBestSeller(@RequestBody DateRequestDto dateRequestDto){
         return successResponse(ordersService.getBestSellers(dateRequestDto),"best sellers");
     }
 

@@ -22,16 +22,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 
 @RequiredArgsConstructor
@@ -45,7 +39,7 @@ public class ProductServiceImpl implements ProductService {
 
 
     @Override
-    public String addProduct(ProductDto productDto,MultipartFile file) throws IOException {
+    public String addProduct(ProductDto productDto, MultipartFile file) throws IOException {
 
         Optional<Product> byName = productRepo.findByName(productDto.getName());
         if (byName.isPresent()) {
@@ -58,10 +52,11 @@ public class ProductServiceImpl implements ProductService {
                 existingproduct.setStock(existingproduct.getStock() + productDto.getStock());
             }
             productRepo.save(existingproduct);
-            return "Product "+productDto.getName()+" already existed so stock has been adjusted";
+            return "Product " + productDto.getName() + " already existed so stock has been adjusted";
         } else {
             Product product = objectMapper.convertValue(productDto, Product.class);
             String path = saveImage("/uploads/", file);
+//            String path = saveImage("C:\\Users\\shyam prasad\\Pictures\\products image", file);
             product.setImage(path);
             productRepo.save(product);
             return "product " + productDto.getName() + " added";
@@ -90,7 +85,7 @@ public class ProductServiceImpl implements ProductService {
     public Object findAllProduct(ProductFilterRequestDto requestDto) {
 //        return productMapper.getAllProducts(requestDto.getName(), requestDto.getProdType(),requestDto.getPageable());
         return customPagination.getPaginatedData(
-                productRepo.getAllProducts(requestDto.getName().trim(),requestDto.getProdType(),requestDto.getPageable()));
+                productRepo.getAllProducts(requestDto.getName().trim(), requestDto.getProdType(), requestDto.getPageable()));
     }
 
     @Override
@@ -129,4 +124,27 @@ public class ProductServiceImpl implements ProductService {
         out.flush();
         out.close();
     }
+
+    @Override
+    public String getImageBase64(Long id) throws IOException {
+        Product product = productRepo.findById(id).orElseThrow(() -> new NotFoundException(messageSource.get(ExceptionMessages.NOT_FOUND.getCode())));
+        String name = product.getImage();
+//        InputStream stream = new FileInputStream("C:\\Users\\shyam prasad\\Pictures\\products image\\"+ name);
+        InputStream stream = new FileInputStream("/uploads/" + name);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        // Read image content into ByteArrayOutputStream
+        byte[] buffer = new byte[1024];
+        int length;
+        while ((length = stream.read(buffer)) != -1) {
+            baos.write(buffer, 0, length);
+        }
+        byte[] imageBytes = baos.toByteArray();
+
+        // Encode byte array to Base64
+        String base64EncodedImage = Base64.getEncoder().encodeToString(imageBytes);
+
+        return base64EncodedImage;
+    }
+
 }
