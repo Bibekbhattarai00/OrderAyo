@@ -24,6 +24,6 @@ public interface OrdersService {
     public String getExcel(HttpServletResponse response) throws IOException, IllegalAccessException;
     Map<String, Object> getSalesReport(DateRequestDto dateRequestDto);
 
-    public Map<String, Object> getBestSellers(DateRequestDto dateRequestDto);
+    public List<Map<String, Object>> getBestSellers(DateRequestDto dateRequestDto);
 
 }

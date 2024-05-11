@@ -23,6 +23,7 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import jakarta.servlet.ServletOutputStream;
+import com.itextpdf.text.Document;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -31,6 +32,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.Duration;
@@ -112,7 +114,7 @@ public class OrderServiceImpl implements OrdersService {
         order.setDeleted(true);
         orderRepo.save(order);
         if(order.getCustomerEmail()!=null) {
-            String emailBody = "Dear" + order.getCustomerName() + " " +
+            String emailBody = "Dear " + order.getCustomerName() + " " +
                     "We're thrilled to inform you that your recent order with us has been dispatched and is on its way to you! Your satisfaction is our top priority, and we're committed to ensuring a smooth delivery experience for you.\n" +
                     "\n" +
                     "To track your order and stay updated on its status, you can now reach out to our trusted courier service, Nepal can Move, directly. They'll be happy to assist you with any inquiries you may have regarding the delivery process.\n" +
@@ -149,26 +151,25 @@ public class OrderServiceImpl implements OrdersService {
 
 
     public String generateBill(Long orderId, HttpServletResponse response) throws IOException, DocumentException {
-
-
         OrderResponseDto order = getOrderDetailsById(orderId);
 
         OrderEntity byId = orderRepo.findById(orderId)
                 .orElseThrow(() -> new NotFoundException(messageSource.get(ExceptionMessages.NOT_FOUND.getCode())));
+
+        // Use ByteArrayOutputStream instead of FileOutputStream
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Document document = new Document();
-        PdfWriter.getInstance(document, new FileOutputStream("bill_order_" + order.getOrderId() + ".pdf"));
+        PdfWriter.getInstance(document, baos);
 
         document.open();
 
-
-        Font Font = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 20, BaseColor.BLACK);
-        Phrase orgName = new Phrase("Regina Shoe Store \n Urlabari-7 Morang", Font);
+        Font font = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 20, BaseColor.BLACK);
+        Phrase orgName = new Phrase("Regina Shoe Store \n Urlabari-7 Morang", font);
         document.add(orgName);
 
         Font customerFont = FontFactory.getFont(FontFactory.HELVETICA, 12, BaseColor.BLACK);
-        Phrase customerInfo = new Phrase("\nCustomer Name: " + order.getCustomerName() + "Contact: " + order.getCustomerContact(), customerFont);
+        Phrase customerInfo = new Phrase("\nCustomer Name: " + order.getCustomerName() + " Contact: " + order.getCustomerContact(), customerFont);
         document.add(customerInfo);
-
 
         PdfPTable table = new PdfPTable(4);
         addTableHeader(table);
@@ -177,14 +178,19 @@ public class OrderServiceImpl implements OrdersService {
         }
 
         document.add(table);
-        response.setContentType("application/pdf");
-        String headerKey = "Content-Disposition";
-        String headerValue = "attachment;filename=bill_order.pdf";
-        response.setHeader(headerKey, headerValue);
         document.close();
 
-        return messageSource.get(ExceptionMessages.DOWNLOADED.getCode());
+        // Convert ByteArrayOutputStream content to byte array
+        byte[] pdfBytes = baos.toByteArray();
+        // Encode byte array to Base64
+        String base64EncodedPDF = Base64.getEncoder().encodeToString(pdfBytes);
+
+        // Set content type to indicate Base64 data
+        response.setContentType("application/json");
+        // Return Base64 encoded PDF string
+        return base64EncodedPDF;
     }
+
 
     private static void addTableHeader(PdfPTable table) {
         Stream.of("Item", "Qty", "Price", "Amount")
@@ -297,7 +303,7 @@ public class OrderServiceImpl implements OrdersService {
     }
 
     @Override
-    public Map<String, Object> getBestSellers(DateRequestDto dateRequestDto) {
+    public List<Map<String, Object>> getBestSellers(DateRequestDto dateRequestDto) {
         return orderRepo.getBestSeller(dateRequestDto.getFrom(), dateRequestDto.getTo());
     }
 

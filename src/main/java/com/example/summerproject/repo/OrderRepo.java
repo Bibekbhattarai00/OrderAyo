@@ -33,5 +33,5 @@ public interface OrderRepo extends GenericSoftDeleteRepository<OrderEntity , Lon
             "ORDER BY \n" +
             "    order_count DESC\n" +
             "LIMIT 5;" ,nativeQuery = true)
-    Map<String, Object> getBestSeller(Date fromDate,Date toDate);
+    List<Map<String, Object>> getBestSeller(Date fromDate,Date toDate);
 }
