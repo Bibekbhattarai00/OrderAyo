@@ -35,8 +35,7 @@ public interface ProductRepo extends GenericSoftDeleteRepository<Product, Long> 
             "       tp.prod_type AS prodType, \n" +
             "       tp.stock AS availableStock\n" +
             "FROM tbl_products tp \n" +
-            "WHERE tp.deleted = false \n" +
-            "AND (tp.prod_type = COALESCE(?2, tp.prod_type))\n" +
+            "WHERE (tp.prod_type = COALESCE(?2, tp.prod_type))\n" +
             "AND (\n" +
             "    CASE \n" +
             "        WHEN ?1 = '-1' THEN TRUE\n" +

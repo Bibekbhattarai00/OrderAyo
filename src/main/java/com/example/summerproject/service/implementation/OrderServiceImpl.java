@@ -23,25 +23,26 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import jakarta.servlet.ServletOutputStream;
-import com.itextpdf.text.Document;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.springframework.beans.BeanUtils;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
+
+import static com.example.summerproject.utils.NullValues.getNullPropertyNames;
 
 
 @Service
@@ -56,8 +57,17 @@ public class OrderServiceImpl implements OrdersService {
     private final MailUtils mailUtils;
     private Logger logger;
 
+
     @Override
     public String placeOrder(OrderDto orderDto) {
+        if (orderDto.getOrderId() != null) {
+            OrderEntity orderbyId = orderRepo.findById(orderDto.getOrderId())
+                    .orElseThrow(() -> new NotFoundException(messageSource.get(ExceptionMessages.NOT_FOUND.getCode())));
+            BeanUtils.copyProperties(orderDto, orderbyId, getNullPropertyNames(orderDto));
+            orderRepo.save(orderbyId);
+            return messageSource.get(ExceptionMessages.UPDATE.getCode());
+
+        }
         List<OrderItemDto> orderItemDtos = orderDto.getOrderItems();
         List<OrderItem> orderItems = new ArrayList<>();
 
@@ -113,7 +123,7 @@ public class OrderServiceImpl implements OrdersService {
         order.setOrderStatus(OrderStatus.DISPATCHED);
         order.setDeleted(true);
         orderRepo.save(order);
-        if(order.getCustomerEmail()!=null) {
+        if (order.getCustomerEmail() != null) {
             String emailBody = "Dear " + order.getCustomerName() + " " +
                     "We're thrilled to inform you that your recent order with us has been dispatched and is on its way to you! Your satisfaction is our top priority, and we're committed to ensuring a smooth delivery experience for you.\n" +
                     "\n" +

@@ -22,16 +22,18 @@ public interface OrderRepo extends GenericSoftDeleteRepository<OrderEntity , Lon
             "    where  to2.created_date BETWEEN COALESCE(?1, to2.created_date) AND COALESCE(?2, to2.created_date)" ,nativeQuery = true)
     Map<String, Object> getSalesReport(Date fromDate,Date toDate);
 
-    @Query(value = "SELECT \n" +
+    @Query(value = " SELECT \n" +
             "    op.product_id,\n" +
+            "    tp.name as name,\n" +
             "    COUNT(op.order_id) AS order_count\n" +
             "FROM \n" +
-            "    order_products op \n" +
-            " where  op.created_date BETWEEN COALESCE(?1, op.created_date) AND COALESCE(?2, op.created_date) " +
+            "    order_products op\n" +
+            "    join tbl_products tp on op.product_id= tp.prod_id\n" +
+            " where  op.created_date BETWEEN COALESCE(?1, op.created_date) AND COALESCE(?2, op.created_date) \n" +
             "GROUP BY \n" +
-            "    op.product_id\n" +
+            "    op.product_id,tp.name\n" +
             "ORDER BY \n" +
             "    order_count DESC\n" +
-            "LIMIT 5;" ,nativeQuery = true)
+            "LIMIT 5;\n" ,nativeQuery = true)
     List<Map<String, Object>> getBestSeller(Date fromDate,Date toDate);
 }
