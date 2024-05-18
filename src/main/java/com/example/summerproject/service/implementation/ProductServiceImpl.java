@@ -49,6 +49,8 @@ public class ProductServiceImpl implements ProductService {
             Product product = productRepo.findById(productDto.getProdId())
                     .orElseThrow(() -> new NotFoundException(messageSource.get(ExceptionMessages.NOT_FOUND.getCode())));
             BeanUtils.copyProperties(productDto, product, getNullPropertyNames(productDto));
+            String path = saveImage("/uploads/", file);
+            product.setImage(path);
             productRepo.save(product);
             return "products has been updated";
         }

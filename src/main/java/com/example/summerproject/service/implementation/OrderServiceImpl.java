@@ -90,6 +90,9 @@ public class OrderServiceImpl implements OrdersService {
             }
 
             product.setStock(product.getStock() - quantity);
+            if(product.getStock()==quantity){
+                product.setDeleted(true);
+            }
             productRepo.save(product);
 
             OrderItem orderItem = new OrderItem();

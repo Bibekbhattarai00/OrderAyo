@@ -33,6 +33,7 @@ public interface ProductRepo extends GenericSoftDeleteRepository<Product, Long> 
             "       tp.cost_price AS costPrice, \n" +
             "       tp.selling_price AS sellingPrice, \n" +
             "       tp.prod_type AS prodType, \n" +
+            "       tp.deleted as deleted ," +
             "       tp.stock AS availableStock\n" +
             "FROM tbl_products tp \n" +
             "WHERE (tp.prod_type = COALESCE(?2, tp.prod_type))\n" +
