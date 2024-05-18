@@ -11,11 +11,14 @@ import com.example.summerproject.generic.pagination.CustomPagination;
 import com.example.summerproject.mapper.ProductMapper;
 import com.example.summerproject.repo.ProductRepo;
 import com.example.summerproject.service.ProductService;
+import com.example.summerproject.utils.ExcelToDb;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.compress.utils.IOUtils;
+import org.springframework.beans.BeanUtils;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +29,8 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+
+import static com.example.summerproject.utils.NullValues.getNullPropertyNames;
 
 
 @RequiredArgsConstructor
@@ -40,7 +45,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public String addProduct(ProductDto productDto, MultipartFile file) throws IOException {
-
+        if(productDto.getProdId()!=null){
+            Product product = productRepo.findById(productDto.getProdId())
+                    .orElseThrow(() -> new NotFoundException(messageSource.get(ExceptionMessages.NOT_FOUND.getCode())));
+            BeanUtils.copyProperties(productDto, product, getNullPropertyNames(productDto));
+            productRepo.save(product);
+            return "products has been updated";
+        }
         Optional<Product> byName = productRepo.findByName(productDto.getName());
         if (byName.isPresent()) {
             Product existingproduct = byName.get();
@@ -112,7 +123,6 @@ public class ProductServiceImpl implements ProductService {
     public void getImage(Long id, HttpServletResponse response) throws IOException {
         Product product = productRepo.findById(id).orElseThrow(() -> new NotFoundException(messageSource.get(ExceptionMessages.NOT_FOUND.getCode())));
         String name = product.getImage();
-//        InputStream stream = new FileInputStream("C:\\Users\\shyam prasad\\Pictures\\Saved Pictures\\" + name);
         InputStream stream = new FileInputStream("/uploads/" + name);
         ServletOutputStream out = response.getOutputStream();
         response.setContentType("image/jpeg");
@@ -145,6 +155,12 @@ public class ProductServiceImpl implements ProductService {
         String base64EncodedImage = Base64.getEncoder().encodeToString(imageBytes);
 
         return base64EncodedImage;
+    }
+    @Override
+    public String exportToDb(MultipartFile file) throws IOException, IllegalAccessException, InstantiationException {
+        List<Product> products = ExcelToDb.createExcel(file, Product.class);
+        productRepo.saveAll(products);
+        return messageSource.get(ExceptionMessages.EXPORT_EXCEL_SUCCESS.getCode());
     }
 
 }

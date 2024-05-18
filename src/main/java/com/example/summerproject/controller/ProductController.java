@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -116,5 +117,17 @@ public class ProductController extends BaseController {
     public GenericResponse<String> getPhotoBase64(@RequestParam Long id) throws IOException {
 //        productService.getImage(id);
         return successResponse(productService.getImageBase64(id), "prod id-:" + id + " details");
+    }
+
+
+    @Operation(summary = "Upload product details", description = "upload product detail based of excel sheet")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "product uploaded"),
+            @ApiResponse(responseCode = "500", description = "internal server error")
+    })
+    @PostMapping(value = "/export-to-db" ,consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_STAFF')")
+    public GenericResponse<String> exportToDb(@ModelAttribute MultipartFile file) throws IOException, IllegalAccessException, InstantiationException {
+        return successResponse(productService.exportToDb(file),"data exported");
     }
 }
