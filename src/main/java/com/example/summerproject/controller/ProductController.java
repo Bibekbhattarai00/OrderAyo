@@ -23,7 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 
 @RequestMapping("/products")
@@ -129,5 +128,16 @@ public class ProductController extends BaseController {
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_STAFF')")
     public GenericResponse<String> exportToDb(@ModelAttribute MultipartFile file) throws IOException, IllegalAccessException, InstantiationException {
         return successResponse(productService.exportToDb(file),"data exported");
+    }
+
+    @Operation(summary = "Upload product details", description = "upload product detail based of excel sheet")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "product uploaded"),
+            @ApiResponse(responseCode = "500", description = "internal server error")
+    })
+    @PostMapping(value = "/import-to-excel")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_STAFF')")
+    public GenericResponse<String> importToExcel(HttpServletResponse response) throws IOException, IllegalAccessException, InstantiationException {
+        return successResponse(productService.downloadExcel(response),"data imported to excel");
     }
 }

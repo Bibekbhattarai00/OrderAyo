@@ -11,6 +11,7 @@ import com.example.summerproject.generic.pagination.CustomPagination;
 import com.example.summerproject.mapper.ProductMapper;
 import com.example.summerproject.repo.ProductRepo;
 import com.example.summerproject.service.ProductService;
+import com.example.summerproject.utils.ExcelGenerator;
 import com.example.summerproject.utils.ExcelToDb;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletOutputStream;
@@ -18,10 +19,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.compress.utils.IOUtils;
 import org.springframework.beans.BeanUtils;
-import org.springframework.context.annotation.Bean;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -90,8 +87,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponseDto findProductByType(String prodName) {
-        return productMapper.getByName(prodName);
+    public Object findProductByType(String prodName) {
+        return productRepo.findAll();
     }
 
     @Override
@@ -165,4 +162,8 @@ public class ProductServiceImpl implements ProductService {
         return messageSource.get(ExceptionMessages.EXPORT_EXCEL_SUCCESS.getCode());
     }
 
+    public  String downloadExcel(HttpServletResponse response) throws IOException, IllegalAccessException {
+        ExcelGenerator.generateExcel(response,productRepo.findInactive(),"product excel sheet",Product.class);
+        return messageSource.get(ExceptionMessages.DOWNLOADED.getCode());
+    }
 }
