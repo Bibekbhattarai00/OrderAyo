@@ -36,6 +36,7 @@ public interface OrderMapper {
 
     @Select("SELECT DISTINCT " +
             "tp.prod_id as prodId , " +
+            " op.id as orderItems, " +
             "   tp.name AS productName, " +
             "   tp.prod_type AS productType, " +
             "   op.quantity AS quantity, " +

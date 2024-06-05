@@ -13,6 +13,7 @@ import com.example.summerproject.exception.CustomMessageSource;
 import com.example.summerproject.exception.ExceptionMessages;
 import com.example.summerproject.exception.NotFoundException;
 import com.example.summerproject.mapper.OrderMapper;
+import com.example.summerproject.repo.OrderItemsRepo;
 import com.example.summerproject.repo.OrderRepo;
 import com.example.summerproject.repo.ProductRepo;
 import com.example.summerproject.service.OrdersService;
@@ -55,16 +56,36 @@ public class OrderServiceImpl implements OrdersService {
     private final CustomMessageSource messageSource;
     private final OrderMapper orderMapper;
     private final MailUtils mailUtils;
+    private final OrderItemsRepo orderItemsRepo;
     private Logger logger;
 
 
     @Override
     public String placeOrder(OrderDto orderDto) {
         if (orderDto.getOrderId() != null) {
-            OrderEntity orderbyId = orderRepo.findById(orderDto.getOrderId())
+            OrderEntity orderById = orderRepo.findById(orderDto.getOrderId())
                     .orElseThrow(() -> new NotFoundException(messageSource.get(ExceptionMessages.NOT_FOUND.getCode())));
-            BeanUtils.copyProperties(orderDto, orderbyId, getNullPropertyNames(orderDto));
-            orderRepo.save(orderbyId);
+            List<OrderItemDto> orderItems = orderDto.getOrderItems();
+            for(OrderItemDto orderItemDto:orderItems) {
+                OrderItem orderItem = orderItemsRepo.findById(orderItemDto.getId())
+                        .orElseThrow(()->new NotFoundException("Order item does not Exist"));
+                BeanUtils.copyProperties(orderItemDto, orderItem, getNullPropertyNames(orderDto.getOrderItems()));
+                Product product = productRepo.findById(orderItemDto.getProductId()).orElseThrow(() -> new NotFoundException("product not found"));
+                Long quantity = orderItemDto.getQuantity();
+                if (product.isDeleted() || product.getStock() < quantity) {
+                    throw new NotFoundException("Insufficient stock for product: " + product.getName());
+                }
+
+                product.setStock(product.getStock() - quantity);
+                if(product.getStock()==quantity){
+                    product.setDeleted(true);
+                }
+                productRepo.save(product);
+                orderItemsRepo.save(orderItem);
+            }
+
+            BeanUtils.copyProperties(orderDto, orderById, getNullPropertyNames(orderDto));
+            orderRepo.save(orderById);
             return messageSource.get(ExceptionMessages.UPDATE.getCode());
 
         }
@@ -112,6 +133,11 @@ public class OrderServiceImpl implements OrdersService {
     @Override
     public List<OrderResponseDto> viewPendingOrders() {
         return orderMapper.getOrdersWithProducts();
+    }
+
+    @Override
+    public OrderResponseDto viewPendingOrdersById(Long id) {
+        return orderMapper.getOrderDetailsById(id);
     }
 
     @Override

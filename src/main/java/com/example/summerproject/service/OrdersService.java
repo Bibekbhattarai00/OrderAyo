@@ -15,6 +15,7 @@ public interface OrdersService {
 
     public String placeOrder(OrderDto orderDto);
     public List<OrderResponseDto> viewPendingOrders();
+    public OrderResponseDto viewPendingOrdersById(Long id);
     public List<OrderResponseDto> viewOrderHistory();
     public String dispatchOrder(Long id);
     public List<OrderResponseDto> viewOrderByCustomer(String phone);

@@ -9,6 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderItemDto {
+    Long id;
     @NotNull(message = "Product Cannot be empty")
     Long productId;
 

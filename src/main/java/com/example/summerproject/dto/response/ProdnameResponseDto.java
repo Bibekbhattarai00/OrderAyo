@@ -11,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ProdnameResponseDto {
     private Long prodId;
-
+    Long orderItems;
     String productName;
 
     String productType;

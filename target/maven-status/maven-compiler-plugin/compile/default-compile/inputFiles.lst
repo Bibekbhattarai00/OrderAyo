@@ -30,6 +30,7 @@ D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\con
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\dto\request\ProductFilterRequestDto.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\dto\request\PasswordResetDto.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\entity\OrderEntity.java
+D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\repo\OrderItemsRepo.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\service\implementation\OrderServiceImpl.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\dto\response\OrderResponseDto.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\generic\repo\GenericSoftDeleteRepository.java

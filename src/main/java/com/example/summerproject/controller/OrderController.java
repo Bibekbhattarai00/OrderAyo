@@ -61,6 +61,17 @@ public class OrderController extends BaseController {
         return successResponse(ordersService.viewPendingOrders(),"All pending orders");
     }
 
+    @Operation(summary = "View orders by id", description = "view pending orders")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "All pending orders fetched"),
+            @ApiResponse(responseCode = "500", description = "internal server error")
+    })
+    @GetMapping("/get-orders-by-id")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_STAFF')")
+    public GenericResponse<OrderResponseDto>  viewPendingOrders(@RequestParam Long id){
+        return successResponse(ordersService.viewPendingOrdersById(id),"pending orders by id");
+    }
+
     @Operation(summary = "Dispatch order orders", description = "Dispatch orders by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "dispatch Success"),

@@ -3,10 +3,7 @@ package com.example.summerproject.entity;
 import com.example.summerproject.auditing.AuditingEntity;
 import com.example.summerproject.enums.OrderStatus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "tbl_orders")
+@Builder
 public class OrderEntity extends AuditingEntity {
     @Id
     @SequenceGenerator(name = "Order_seq", allocationSize = 1)
