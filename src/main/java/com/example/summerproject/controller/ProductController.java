@@ -74,10 +74,10 @@ public class ProductController extends BaseController {
             @ApiResponse(responseCode = "200", description = "Product added"),
             @ApiResponse(responseCode = "500", description = "internal server error")
     })
-    @GetMapping("/get-products-By-Name")
+    @GetMapping("/get-out-of-stock-products")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_STAFF')")
-    public GenericResponse<ProductResponseDto> getProductByName(@RequestParam String name) {
-        return successResponse(productService.findProduct(name), messageSource.get(ExceptionMessages.SUCCESS.getCode()));
+    public GenericResponse<List<ProductResponseDto>> getProductByName() {
+        return successResponse(productService.findProduct(), messageSource.get(ExceptionMessages.SUCCESS.getCode()));
     }
 
 

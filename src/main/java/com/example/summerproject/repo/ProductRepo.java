@@ -40,7 +40,7 @@ public interface ProductRepo extends GenericSoftDeleteRepository<Product, Long> 
             "AND (\n" +
             "    CASE \n" +
             "        WHEN ?1 = '-1' THEN TRUE\n" +
-            "        ELSE (tp.\"name\" LIKE CONCAT('%', ?1, '%'))\n" +
+            "        ELSE (tp.\"name\" ILIKE CONCAT('%', ?1, '%'))\n" +
             "    END\n" +
             ")\n" , nativeQuery = true)
     Page<Map<String, Object>> getAllProducts(String name, String type , Pageable pageable);

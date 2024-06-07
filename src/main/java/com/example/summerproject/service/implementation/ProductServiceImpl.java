@@ -82,8 +82,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponseDto findProduct(String prodName) {
-        return productMapper.getByName(prodName);
+    public List<ProductResponseDto> findProduct() {
+        return productMapper.getAllOutOfStockProducts();
     }
 
     @Override

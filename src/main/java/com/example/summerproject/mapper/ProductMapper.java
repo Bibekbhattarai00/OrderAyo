@@ -12,7 +12,7 @@ import java.util.List;
 
 @Mapper
 public interface ProductMapper {
-    @Select("SELECT tp.prod_id AS prodId, \n" +
+    @Select(" SELECT tp.prod_id AS prodId, \n" +
             "       tp.created_by AS modifiedBy, \n" +
             "       tp.\"name\" AS prodName, \n" +
             "       tp.cost_price AS costPrice, \n" +
@@ -20,15 +20,8 @@ public interface ProductMapper {
             "       tp.prod_type AS prodType, \n" +
             "       tp.stock AS availableStock\n" +
             "FROM tbl_products tp \n" +
-            "WHERE tp.deleted = false \n" +
-            "AND (tp.prod_type = COALESCE(#{type}, tp.prod_type))\n" +
-            "AND (\n" +
-            "    CASE \n" +
-            "        WHEN #{name} = '-1' THEN TRUE\n" +
-            "        ELSE (tp.\"name\" LIKE CONCAT('%', #{name}, '%'))\n" +
-            "    END\n" +
-            ")\n")
-    List<ProductResponseDto> getAllProducts(@Param("name") String name, @Param("type") String type , Pageable pageable);
+            "WHERE tp.stock <=0\n")
+    List<ProductResponseDto> getAllOutOfStockProducts();
 
     @Select("select tp.prod_id as prodId , tp.created_by as modifiedBy ,tp.\"name\" as prodName , tp.cost_price as CostPrice, \n" +
             "tp.selling_price as SellingPrice ,tp.prod_type as prodType ,tp.stock as AvailableStock\n" +

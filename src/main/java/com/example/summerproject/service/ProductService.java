@@ -14,7 +14,7 @@ import java.util.Map;
 public interface ProductService {
     String addProduct(ProductDto productDto, MultipartFile file) throws IOException;
     String deleteProduct(Long prodId);
-    ProductResponseDto findProduct(String prodName);
+    public List<ProductResponseDto> findProduct();
     public Object findProductByType(String prodName);
     Object findAllProduct(ProductFilterRequestDto requestDto);
     List<ProductResponseDto> getAllProductsWithoutPaginationReq();
