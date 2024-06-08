@@ -58,8 +58,9 @@ public class PotentialCustomersServiceImpl implements PotentialCustomersService 
     }
 
 
-    //    @Scheduled(fixedRate = 500)
+//        @Scheduled(fixedRate = 500)
     @Scheduled(cron = "0 30 20 * * *")
+//    @Scheduled(cron = "0 * * * * *")
     @Override
     public void notifyCustomers() {
         List<PotentialCustomers> potentialCustomerRepoAll = potentialCustomerRepo.findAll();

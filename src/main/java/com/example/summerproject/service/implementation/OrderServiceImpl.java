@@ -17,6 +17,7 @@ import com.example.summerproject.repo.OrderItemsRepo;
 import com.example.summerproject.repo.OrderRepo;
 import com.example.summerproject.repo.ProductRepo;
 import com.example.summerproject.service.OrdersService;
+import com.example.summerproject.service.ProductService;
 import com.example.summerproject.utils.MailUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itextpdf.text.*;
@@ -57,6 +58,7 @@ public class OrderServiceImpl implements OrdersService {
     private final OrderMapper orderMapper;
     private final MailUtils mailUtils;
     private final OrderItemsRepo orderItemsRepo;
+    private final ProductService productService;
     private Logger logger;
 
 
@@ -78,9 +80,10 @@ public class OrderServiceImpl implements OrdersService {
 
                 product.setStock(product.getStock() - quantity);
                 if(product.getStock()==quantity){
-                    product.setDeleted(true);
+//                    product.setDeleted(true);
+                    productService.deleteProduct(product.getId());
                 }
-                productRepo.save(product);
+//                productRepo.save(product);
                 orderItemsRepo.save(orderItem);
             }
 
@@ -112,9 +115,10 @@ public class OrderServiceImpl implements OrdersService {
 
             product.setStock(product.getStock() - quantity);
             if(product.getStock()==quantity){
-                product.setDeleted(true);
+                productService.deleteProduct(product.getId());
+//                product.setDeleted(true);
             }
-            productRepo.save(product);
+//            productRepo.save(product);
 
             OrderItem orderItem = new OrderItem();
             orderItem.setOrder(order);
