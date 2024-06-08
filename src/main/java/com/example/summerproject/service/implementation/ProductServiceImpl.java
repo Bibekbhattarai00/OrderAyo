@@ -47,8 +47,8 @@ public class ProductServiceImpl implements ProductService {
             Product product = productRepo.findById(productDto.getProdId())
                     .orElseThrow(() -> new NotFoundException(messageSource.get(ExceptionMessages.NOT_FOUND.getCode())));
             BeanUtils.copyProperties(productDto, product, getNullPropertyNames(productDto));
-//            String path = saveImage("/uploads/", file);
-            String path = saveImage("C:/Users/shyam prasad/Pictures/products image/", file);
+            String path = saveImage("/uploads/", file);
+//            String path = saveImage("C:/Users/shyam prasad/Pictures/products image/", file);
             product.setImage(path);
             productRepo.save(product);
             return "products has been updated";
@@ -67,8 +67,8 @@ public class ProductServiceImpl implements ProductService {
             return "Product " + productDto.getName() + " already existed so stock has been adjusted";
         } else {
             Product product = objectMapper.convertValue(productDto, Product.class);
-//            String path = saveImage("/uploads/", file);
-            String path = saveImage("C:/Users/shyam prasad/Pictures/products image/", file);
+            String path = saveImage("/uploads/", file);
+//            String path = saveImage("C:/Users/shyam prasad/Pictures/products image/", file);
             product.setImage(path);
             productRepo.save(product);
             return "product " + productDto.getName() + " added";
@@ -124,8 +124,8 @@ public class ProductServiceImpl implements ProductService {
     public void getImage(Long id, HttpServletResponse response) throws IOException {
         Product product = productRepo.findById(id).orElseThrow(() -> new NotFoundException(messageSource.get(ExceptionMessages.NOT_FOUND.getCode())));
         String name = product.getImage();
-//        InputStream stream = new FileInputStream("/uploads/" + name);
-        InputStream stream = new FileInputStream("C:/Users/shyam prasad/Pictures/products image/" + name);
+        InputStream stream = new FileInputStream("/uploads/" + name);
+//        InputStream stream = new FileInputStream("C:/Users/shyam prasad/Pictures/products image/" + name);
         ServletOutputStream out = response.getOutputStream();
         response.setContentType("image/jpeg");
         String headerKey = "Content-Disposition";
@@ -141,8 +141,8 @@ public class ProductServiceImpl implements ProductService {
     public String getImageBase64(Long id) throws IOException {
         Product product = productRepo.findById(id).orElseThrow(() -> new NotFoundException(messageSource.get(ExceptionMessages.NOT_FOUND.getCode())));
         String name = product.getImage();
-        InputStream stream = new FileInputStream("C:/Users/shyam prasad/Pictures/products image/"+ name);
-//        InputStream stream = new FileInputStream("/uploads/" + name);
+//        InputStream stream = new FileInputStream("C:/Users/shyam prasad/Pictures/products image/"+ name);
+        InputStream stream = new FileInputStream("/uploads/" + name);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
         // Read image content into ByteArrayOutputStream
