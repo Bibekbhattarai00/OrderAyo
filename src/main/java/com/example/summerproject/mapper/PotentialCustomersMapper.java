@@ -12,8 +12,9 @@ public interface PotentialCustomersMapper {
     @Select("select tbc.name as customerName,\n" +
             "           tbc.id as id,\n" +
             "           tp.name as productName,\n" +
-            "           tbc.customer_email as email,\n" +
-            "           tbc.phone as phone\n" +
+            "           tbc.customer_email as customerEmail,\n" +
+            "           tbc.phone as phone ,\n" +
+            " tbc.prod_id as productId" +
             "    from tbl_potential_customers tbc\n" +
             "    join tbl_products tp on tbc.prod_id = tp.prod_id\n" +
             "    where tbc.deleted=false")

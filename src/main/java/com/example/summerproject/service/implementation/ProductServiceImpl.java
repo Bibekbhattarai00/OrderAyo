@@ -13,6 +13,7 @@ import com.example.summerproject.repo.ProductRepo;
 import com.example.summerproject.service.ProductService;
 import com.example.summerproject.utils.ExcelGenerator;
 import com.example.summerproject.utils.ExcelToDb;
+import com.example.summerproject.utils.FilePathConstants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
@@ -42,11 +43,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public String addProduct(ProductDto productDto, MultipartFile file) throws IOException {
-        if(productDto.getProdId()!=null){
+        if (productDto.getProdId() != null) {
             Product product = productRepo.findById(productDto.getProdId())
                     .orElseThrow(() -> new NotFoundException(messageSource.get(ExceptionMessages.NOT_FOUND.getCode())));
             BeanUtils.copyProperties(productDto, product, getNullPropertyNames(productDto));
             String path = saveImage("/uploads/", file);
+//            String path = saveImage("C:/Users/shyam prasad/Pictures/products image/", file);
             product.setImage(path);
             productRepo.save(product);
             return "products has been updated";
@@ -123,6 +125,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepo.findById(id).orElseThrow(() -> new NotFoundException(messageSource.get(ExceptionMessages.NOT_FOUND.getCode())));
         String name = product.getImage();
         InputStream stream = new FileInputStream("/uploads/" + name);
+//        InputStream stream = new FileInputStream("C:/Users/shyam prasad/Pictures/products image/" + name);
         ServletOutputStream out = response.getOutputStream();
         response.setContentType("image/jpeg");
         String headerKey = "Content-Disposition";
@@ -138,7 +141,7 @@ public class ProductServiceImpl implements ProductService {
     public String getImageBase64(Long id) throws IOException {
         Product product = productRepo.findById(id).orElseThrow(() -> new NotFoundException(messageSource.get(ExceptionMessages.NOT_FOUND.getCode())));
         String name = product.getImage();
-//        InputStream stream = new FileInputStream("C:\\Users\\shyam prasad\\Pictures\\products image\\"+ name);
+//        InputStream stream = new FileInputStream("C:/Users/shyam prasad/Pictures/products image/"+ name);
         InputStream stream = new FileInputStream("/uploads/" + name);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
@@ -155,6 +158,7 @@ public class ProductServiceImpl implements ProductService {
 
         return base64EncodedImage;
     }
+
     @Override
     public String exportToDb(MultipartFile file) throws IOException, IllegalAccessException, InstantiationException {
         List<Product> products = ExcelToDb.createExcel(file, Product.class);
@@ -162,8 +166,8 @@ public class ProductServiceImpl implements ProductService {
         return messageSource.get(ExceptionMessages.EXPORT_EXCEL_SUCCESS.getCode());
     }
 
-    public  String downloadExcel(HttpServletResponse response) throws IOException, IllegalAccessException {
-        ExcelGenerator.generateExcel(response,productRepo.findInactive(),"product excel sheet",Product.class);
+    public String downloadExcel(HttpServletResponse response) throws IOException, IllegalAccessException {
+        ExcelGenerator.generateExcel(response, productRepo.findInactive(), "product excel sheet", Product.class);
         return messageSource.get(ExceptionMessages.DOWNLOADED.getCode());
     }
 }

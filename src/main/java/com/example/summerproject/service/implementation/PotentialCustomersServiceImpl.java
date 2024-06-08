@@ -7,6 +7,7 @@ import com.example.summerproject.entity.Product;
 import com.example.summerproject.exception.CustomMessageSource;
 import com.example.summerproject.exception.ExceptionMessages;
 import com.example.summerproject.exception.NotFoundException;
+import com.example.summerproject.mapper.PotentialCustomersMapper;
 import com.example.summerproject.repo.PotentialCustomerRepo;
 import com.example.summerproject.repo.ProductRepo;
 import com.example.summerproject.service.PotentialCustomersService;
@@ -25,6 +26,7 @@ public class PotentialCustomersServiceImpl implements PotentialCustomersService 
     private final ProductRepo productRepo;
     private final CustomMessageSource messageSource;
     private final MailUtils mailUtils;
+    private final PotentialCustomersMapper potentialCustomersMapper;
 
     @Override
     public boolean addCustomer(PotentialCutomerDto potentialCutomerDto) {
@@ -60,7 +62,6 @@ public class PotentialCustomersServiceImpl implements PotentialCustomersService 
 
     @Override
     public List<PotentialCustomerResponseDto> getPotentialCustomers() {
-
-        return null;
+        return potentialCustomersMapper.getAllPotentialCustomer();
     }
 }

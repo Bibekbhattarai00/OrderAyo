@@ -27,13 +27,13 @@ public interface ProductRepo extends GenericSoftDeleteRepository<Product, Long> 
 
 
 
-    @Query(value = "SELECT tp.prod_id AS prodId, \n" +
+    @Query(value = " SELECT tp.prod_id AS prodId, \n" +
             "       tp.created_by AS modifiedBy, \n" +
             "       tp.\"name\" AS prodName, \n" +
             "       tp.cost_price AS costPrice, \n" +
             "       tp.selling_price AS sellingPrice, \n" +
             "       tp.prod_type AS prodType, \n" +
-            "       tp.deleted as deleted ," +
+            "       tp.deleted as deleted ,\n" +
             "       tp.stock AS availableStock\n" +
             "FROM tbl_products tp \n" +
             "WHERE (tp.prod_type = COALESCE(?2, tp.prod_type))\n" +
@@ -41,8 +41,8 @@ public interface ProductRepo extends GenericSoftDeleteRepository<Product, Long> 
             "    CASE \n" +
             "        WHEN ?1 = '-1' THEN TRUE\n" +
             "        ELSE (tp.\"name\" ILIKE CONCAT('%', ?1, '%'))\n" +
-            "    END\n" +
-            ")\n" , nativeQuery = true)
+            "    END) \n" +
+            "    order by modified_date desc " , nativeQuery = true)
     Page<Map<String, Object>> getAllProducts(String name, String type , Pageable pageable);
 
 }

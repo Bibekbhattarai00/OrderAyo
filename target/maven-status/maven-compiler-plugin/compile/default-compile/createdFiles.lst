@@ -88,6 +88,7 @@ com\example\summerproject\repo\PotentialCustomerRepo.class
 com\example\summerproject\generic\repo\GenericRepository.class
 com\example\summerproject\dto\request\ProductDto.class
 com\example\summerproject\enums\OrderStatus.class
+com\example\summerproject\utils\FilePathConstants.class
 com\example\summerproject\service\ProductService.class
 com\example\summerproject\service\UserService.class
 com\example\summerproject\dto\request\ProductFilterRequestDto.class
