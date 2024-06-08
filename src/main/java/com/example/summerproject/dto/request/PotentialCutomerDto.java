@@ -14,6 +14,6 @@ public class PotentialCutomerDto {
     Long id;
     String customerEmail;
     String phone;
-    String name;
+    String customerName;
     Long productId;
 }

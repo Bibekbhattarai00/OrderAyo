@@ -32,7 +32,7 @@ public class PotentialCustomersServiceImpl implements PotentialCustomersService 
     public boolean addCustomer(PotentialCutomerDto potentialCutomerDto) {
         Product product = productRepo.findById(potentialCutomerDto.getProductId()).orElseThrow(() -> new NotFoundException(messageSource.get(ExceptionMessages.NOT_FOUND.getCode())));
         potentialCustomerRepo.save(PotentialCustomers.builder()
-                .name(potentialCutomerDto.getName())
+                .name(potentialCutomerDto.getCustomerName())
                 .phone(potentialCutomerDto.getPhone())
                 .product(product)
                 .customerEmail(potentialCutomerDto.getCustomerEmail())
