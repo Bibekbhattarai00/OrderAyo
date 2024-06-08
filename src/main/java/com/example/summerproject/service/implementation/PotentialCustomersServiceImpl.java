@@ -13,10 +13,14 @@ import com.example.summerproject.repo.ProductRepo;
 import com.example.summerproject.service.PotentialCustomersService;
 import com.example.summerproject.utils.MailUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
+import static com.example.summerproject.utils.NullValues.getNullPropertyNames;
 
 @Service
 @RequiredArgsConstructor
@@ -30,18 +34,32 @@ public class PotentialCustomersServiceImpl implements PotentialCustomersService 
 
     @Override
     public boolean addCustomer(PotentialCutomerDto potentialCutomerDto) {
-        Product product = productRepo.findById(potentialCutomerDto.getProductId()).orElseThrow(() -> new NotFoundException(messageSource.get(ExceptionMessages.NOT_FOUND.getCode())));
-        potentialCustomerRepo.save(PotentialCustomers.builder()
-                .name(potentialCutomerDto.getCustomerName())
-                .phone(potentialCutomerDto.getPhone())
-                .product(product)
-                .customerEmail(potentialCutomerDto.getCustomerEmail())
-                .build());
+
+        if (potentialCutomerDto.getId() != null) {
+            PotentialCustomers potentialCustomers = potentialCustomerRepo.findById(potentialCutomerDto.getId())
+                    .orElseThrow(()-> new NotFoundException(messageSource.get(ExceptionMessages.NOT_FOUND.getCode())));
+            BeanUtils.copyProperties(potentialCutomerDto,potentialCustomers,getNullPropertyNames(potentialCutomerDto));
+            if(potentialCutomerDto.getProductId()!=null){
+                Product product = productRepo.findById(potentialCutomerDto.getProductId()).orElseThrow(() -> new NotFoundException(messageSource.get(ExceptionMessages.NOT_FOUND.getCode())));
+                potentialCustomers.setProduct(product);
+            }
+            potentialCustomerRepo.save(potentialCustomers);
+        } else {
+            Product product = productRepo.findById(potentialCutomerDto.getProductId()).orElseThrow(() -> new NotFoundException(messageSource.get(ExceptionMessages.NOT_FOUND.getCode())));
+            potentialCustomerRepo.save(PotentialCustomers.builder()
+                    .name(potentialCutomerDto.getCustomerName())
+                    .phone(potentialCutomerDto.getPhone())
+                    .product(product)
+                    .customerEmail(potentialCutomerDto.getCustomerEmail())
+                    .build());
+        }
+
         return true;
     }
 
-//    @Scheduled(fixedRate = 500)
- @Scheduled(cron = "0 30 20 * * *")
+
+    //    @Scheduled(fixedRate = 500)
+    @Scheduled(cron = "0 30 20 * * *")
     @Override
     public void notifyCustomers() {
         List<PotentialCustomers> potentialCustomerRepoAll = potentialCustomerRepo.findAll();
