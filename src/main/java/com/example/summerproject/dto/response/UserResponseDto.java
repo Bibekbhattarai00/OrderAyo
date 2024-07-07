@@ -15,4 +15,5 @@ public class UserResponseDto {
     String email;
     String role;
     String addedBy;
+    boolean deleted;
 }

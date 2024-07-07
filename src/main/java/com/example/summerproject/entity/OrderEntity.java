@@ -29,7 +29,7 @@ public class OrderEntity extends AuditingEntity {
     @Enumerated(EnumType.STRING)
     OrderStatus orderStatus;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "order", orphanRemoval = true)
     List<OrderItem> orderItems = new ArrayList<>();
 
     boolean deleted = Boolean.FALSE;

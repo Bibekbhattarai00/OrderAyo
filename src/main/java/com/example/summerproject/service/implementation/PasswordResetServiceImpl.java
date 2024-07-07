@@ -52,10 +52,10 @@ public class PasswordResetServiceImpl implements PasswordResetService {
                 userEntityRepo.save(user);
                 return messageSource.get(ExceptionMessages.SUCCESS.getCode());
             } else {
-                return messageSource.get(ExceptionMessages.INVALID_CREDENTIALS.getCode());
+                throw new NotFoundException(messageSource.get(ExceptionMessages.INVALID_CREDENTIALS.getCode()));
             }
         } else {
-            return messageSource.get(ExceptionMessages.AUTHENTICATION_ERROR.getCode());
+            throw new NotFoundException(messageSource.get(ExceptionMessages.AUTHENTICATION_ERROR.getCode()));
         }
 
     }

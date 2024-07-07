@@ -67,27 +67,46 @@ public class OrderServiceImpl implements OrdersService {
         if (orderDto.getOrderId() != null) {
             OrderEntity orderById = orderRepo.findById(orderDto.getOrderId())
                     .orElseThrow(() -> new NotFoundException(messageSource.get(ExceptionMessages.NOT_FOUND.getCode())));
+
             List<OrderItemDto> orderItems = orderDto.getOrderItems();
+            List<OrderItem> existingOrderItems = orderById.getOrderItems();
+            List<OrderItem> updatedOrderItem =new ArrayList<>();
+
+            //reset previous stock
+            for(OrderItem existingItems:existingOrderItems){
+                Product product = existingItems.getProduct();
+                Long quantity = existingItems.getQuantity();
+                product.setStock(product.getStock()+quantity);
+                productRepo.save(product);
+            }
+
             for(OrderItemDto orderItemDto:orderItems) {
+
                 OrderItem orderItem = orderItemsRepo.findById(orderItemDto.getId())
                         .orElseThrow(()->new NotFoundException("Order item does not Exist"));
                 BeanUtils.copyProperties(orderItemDto, orderItem, getNullPropertyNames(orderDto.getOrderItems()));
+
                 Product product = productRepo.findById(orderItemDto.getProductId()).orElseThrow(() -> new NotFoundException("product not found"));
                 Long quantity = orderItemDto.getQuantity();
+
                 if (product.isDeleted() || product.getStock() < quantity) {
                     throw new NotFoundException("Insufficient stock for product: " + product.getName());
                 }
 
                 product.setStock(product.getStock() - quantity);
+
                 if(product.getStock()==quantity){
 //                    product.setDeleted(true);
                     productService.deleteProduct(product.getId());
                 }
+                orderItem.setProduct(product);
+                updatedOrderItem.add(orderItem);
 //                productRepo.save(product);
                 orderItemsRepo.save(orderItem);
             }
 
             BeanUtils.copyProperties(orderDto, orderById, getNullPropertyNames(orderDto));
+            orderById.setOrderItems(updatedOrderItem);
             orderRepo.save(orderById);
             return messageSource.get(ExceptionMessages.UPDATE.getCode());
 
@@ -264,8 +283,8 @@ public class OrderServiceImpl implements OrdersService {
         table.addCell(amountCell);
     }
 
-    @Scheduled(cron = "0 30 20 * * *")
-//    @Scheduled(fixedRate = 500)
+//    @Scheduled(cron = "0 30 20 * * *")
+    @Scheduled(cron = "0 * * * * *")
     public void sendPendingOrderReminderEmail() {
         Optional<List<OrderEntity>> pendingOrders = orderRepo.findByOrderStatus(OrderStatus.PENDING);
 

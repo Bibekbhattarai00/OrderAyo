@@ -43,6 +43,9 @@ public class PotentialCustomersServiceImpl implements PotentialCustomersService 
                 Product product = productRepo.findById(potentialCutomerDto.getProductId()).orElseThrow(() -> new NotFoundException(messageSource.get(ExceptionMessages.NOT_FOUND.getCode())));
                 potentialCustomers.setProduct(product);
             }
+            if(potentialCutomerDto.getCustomerName()!=null){
+                potentialCustomers.setName(potentialCustomers.getName());
+            }
             potentialCustomerRepo.save(potentialCustomers);
         } else {
             Product product = productRepo.findById(potentialCutomerDto.getProductId()).orElseThrow(() -> new NotFoundException(messageSource.get(ExceptionMessages.NOT_FOUND.getCode())));
@@ -59,8 +62,8 @@ public class PotentialCustomersServiceImpl implements PotentialCustomersService 
 
 
 //        @Scheduled(fixedRate = 500)
-    @Scheduled(cron = "0 30 20 * * *")
-//    @Scheduled(cron = "0 * * * * *")
+//    @Scheduled(cron = "0 30 20 * * *")
+    @Scheduled(cron = "0 * * * * *")
     @Override
     public void notifyCustomers() {
         List<PotentialCustomers> potentialCustomerRepoAll = potentialCustomerRepo.findAll();
@@ -74,8 +77,8 @@ public class PotentialCustomersServiceImpl implements PotentialCustomersService 
                         "Thank you";
                 String subject = "sub:- product restocked notification ";
                 mailUtils.sendMail(potentialCustomers.getCustomerEmail(), subject, body);
+                potentialCustomerRepo.delete(potentialCustomers);
             }
-            potentialCustomerRepo.delete(potentialCustomers);
         }
     }
 
