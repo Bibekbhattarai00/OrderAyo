@@ -16,13 +16,13 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 
 @RequestMapping("/products")
@@ -74,10 +74,10 @@ public class ProductController extends BaseController {
             @ApiResponse(responseCode = "200", description = "Product added"),
             @ApiResponse(responseCode = "500", description = "internal server error")
     })
-    @GetMapping("/get-products-By-Name")
+    @GetMapping("/get-out-of-stock-products")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_STAFF')")
-    public GenericResponse<ProductResponseDto> getProductByName(@RequestParam String name) {
-        return successResponse(productService.findProduct(name), messageSource.get(ExceptionMessages.SUCCESS.getCode()));
+    public GenericResponse<List<ProductResponseDto>> getProductByName() {
+        return successResponse(productService.findProduct(), messageSource.get(ExceptionMessages.SUCCESS.getCode()));
     }
 
 
@@ -116,5 +116,28 @@ public class ProductController extends BaseController {
     public GenericResponse<String> getPhotoBase64(@RequestParam Long id) throws IOException {
 //        productService.getImage(id);
         return successResponse(productService.getImageBase64(id), "prod id-:" + id + " details");
+    }
+
+
+    @Operation(summary = "Upload product details", description = "upload product detail based of excel sheet")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "product uploaded"),
+            @ApiResponse(responseCode = "500", description = "internal server error")
+    })
+    @PostMapping(value = "/export-to-db" ,consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_STAFF')")
+    public GenericResponse<String> exportToDb(@ModelAttribute MultipartFile file) throws IOException, IllegalAccessException, InstantiationException {
+        return successResponse(productService.exportToDb(file),"data exported");
+    }
+
+    @Operation(summary = "Upload product details", description = "upload product detail based of excel sheet")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "product uploaded"),
+            @ApiResponse(responseCode = "500", description = "internal server error")
+    })
+    @PostMapping(value = "/import-to-excel")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_STAFF')")
+    public GenericResponse<String> importToExcel(HttpServletResponse response) throws IOException, IllegalAccessException, InstantiationException {
+        return successResponse(productService.downloadExcel(response),"data imported to excel");
     }
 }

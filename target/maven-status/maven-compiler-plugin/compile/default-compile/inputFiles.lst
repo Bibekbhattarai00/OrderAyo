@@ -1,9 +1,11 @@
+D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\repo\PotentialCustomerRepo.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\SummerProjectApplication.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\securityconfig\UserInfoDetailService.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\dto\request\ResetTokenDto.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\enums\OrderStatus.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\securityconfig\SecurityConfig.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\controller\EsewaController.java
+D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\entity\PotentialCustomers.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\jwt\JwtAuthFilter.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\securityconfig\UserInfoDetails.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\dto\request\ProductDto.java
@@ -13,8 +15,10 @@ D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\gen
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\dto\response\UserResponseDto.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\repo\UserEntityRepo.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\dto\request\OrderDto.java
+D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\service\implementation\PotentialCustomersServiceImpl.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\service\implementation\ProductServiceImpl.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\service\UserService.java
+D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\service\PotentialCustomersService.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\service\implementation\EsewaServiceimpl.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\exception\ExceptionMessages.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\dto\request\UserDto.java
@@ -26,6 +30,7 @@ D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\con
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\dto\request\ProductFilterRequestDto.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\dto\request\PasswordResetDto.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\entity\OrderEntity.java
+D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\repo\OrderItemsRepo.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\service\implementation\OrderServiceImpl.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\dto\response\OrderResponseDto.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\generic\repo\GenericSoftDeleteRepository.java
@@ -36,7 +41,10 @@ D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\jwt
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\service\implementation\EmailServiceImpl.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\entity\UserEntity.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\repo\ResetTokenRepo.java
+D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\dto\response\PotentialCustomerResponseDto.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\service\EmailService.java
+D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\controller\PotentialCustomersController.java
+D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\mapper\PotentialCustomersMapper.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\dto\request\DateRequestDto.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\generic\dto\DateRangeHolder.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\controller\OrderController.java
@@ -46,6 +54,7 @@ D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\ser
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\mapper\ProductMapper.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\utils\MailUtils.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\generic\entity\BaseEntity.java
+D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\utils\FilePathConstants.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\mapper\OrderMapper.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\service\implementation\PasswordResetServiceImpl.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\entity\OrderItem.java
@@ -75,6 +84,7 @@ D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\ser
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\utils\GetUserRole.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\repo\ProductRepo.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\utils\ExcelGenerator.java
+D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\dto\request\PotentialCutomerDto.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\controller\UserController.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\utils\ExcelToDb.java
 D:\hobs\Spring content\SummerProject\src\main\java\com\example\summerproject\dto\response\ProductResponseDto.java

@@ -15,7 +15,7 @@ public interface GenericSoftDeleteRepository<T extends BaseEntity, ID extends Se
 
     @Override
     @Transactional(readOnly = true)
-    @Query("select e from #{#entityName} e where e.deleted = true")
+    @Query("select e from #{#entityName} e where e.deleted = false")
     List<T> findAll();
 
     @Override
@@ -34,9 +34,9 @@ public interface GenericSoftDeleteRepository<T extends BaseEntity, ID extends Se
     List<T> findInactive();
 
     //Look up all entities
-    @Query("select e from #{#entityName} e order by e.createdDate desc ")
-    @Transactional(readOnly = true)
-    List<T> findAllWithInactive();
+//    @Query("select e from #{#entityName} e order by e.createdDate desc ")
+//    @Transactional(readOnly = true)
+//    List<T> findAllWithInactive();
 
 //	@Query("select e from #{#entityName} e")
 //	@Transactional(readOnly = true)
@@ -57,7 +57,7 @@ public interface GenericSoftDeleteRepository<T extends BaseEntity, ID extends Se
     }
 
     @Override
-    @Query("update #{#entityName} e set e.deleted= false where e.id = ?1")
+    @Query("update #{#entityName} e set e.deleted= true where e.id = ?1")
     @Transactional
     @Modifying
     void deleteById(ID id);

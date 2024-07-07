@@ -14,12 +14,15 @@ import java.util.Map;
 public interface ProductService {
     String addProduct(ProductDto productDto, MultipartFile file) throws IOException;
     String deleteProduct(Long prodId);
-    ProductResponseDto findProduct(String prodName);
-    public ProductResponseDto findProductByType(String prodName);
+    public List<ProductResponseDto> findProduct();
+    public Object findProductByType(String prodName);
     Object findAllProduct(ProductFilterRequestDto requestDto);
     List<ProductResponseDto> getAllProductsWithoutPaginationReq();
 //    public String getImage(Long id, HttpServletResponse response) throws IOException ;
     public String getImageBase64(Long id) throws IOException ;
 
     public void getImage(Long id, HttpServletResponse response) throws IOException;
+
+    public String exportToDb(MultipartFile file) throws IOException, IllegalAccessException, InstantiationException;
+    public  String downloadExcel(HttpServletResponse response) throws IOException, IllegalAccessException;
 }

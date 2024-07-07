@@ -8,21 +8,23 @@ import java.util.List;
 
 @Mapper
 public interface OrderMapper {
-    @Select(" SELECT DISTINCT to2.id as orderId, " +
-            "   to2.customer_name AS customerName, " +
-            "   to2.customer_contact AS customerContact, " +
-            " to2.customer_email AS customerEmail ," +
-            " to2.address as address ," +
-            "   SUM(tp.selling_price * op.quantity) OVER (PARTITION BY to2.id) AS total ," +
-            " to2.created_date as orderDate " +
-            " FROM " +
-            "   tbl_orders to2 " +
-            "INNER JOIN " +
-            "   order_products op ON to2.id = op.order_id " +
-            "INNER JOIN " +
-            "   tbl_products tp ON tp.prod_id = op.product_id " +
-            "WHERE to2.deleted =false and " +
-            "   to2.order_status = 'PENDING'")
+    @Select("  SELECT DISTINCT to2.id as orderId, \n" +
+            "   to2.customer_name AS customerName, \n" +
+            "   to2.customer_contact AS customerContact, \n" +
+            " to2.customer_email AS customerEmail ,\n" +
+            " to2.address as address ,\n" +
+            "   SUM(tp.selling_price * op.quantity) OVER (PARTITION BY to2.id) AS total ,\n" +
+            " to2.created_date as orderDate ,\n" +
+            " to2.modified_date " +
+            " FROM \n" +
+            "   tbl_orders to2 \n" +
+            "INNER JOIN \n" +
+            "   order_products op ON to2.id = op.order_id \n" +
+            "INNER JOIN \n" +
+            "   tbl_products tp ON tp.prod_id = op.product_id \n" +
+            "WHERE to2.deleted =false and \n" +
+            "   to2.order_status = 'PENDING'\n" +
+            "   order by to2.modified_date desc ")
     @Results({
             @Result(property = "orderId", column = "orderId"),
             @Result(property = "customerName", column = "customerName"),
@@ -36,6 +38,7 @@ public interface OrderMapper {
 
     @Select("SELECT DISTINCT " +
             "tp.prod_id as prodId , " +
+            " op.id as orderItems, " +
             "   tp.name AS productName, " +
             "   tp.prod_type AS productType, " +
             "   op.quantity AS quantity, " +

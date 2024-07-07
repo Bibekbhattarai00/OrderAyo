@@ -33,4 +33,5 @@ public class ProductDto {
     @NotNull(message = "cost price Cannot be empty")
     Long costPrice;
 
+    boolean deleted;
 }

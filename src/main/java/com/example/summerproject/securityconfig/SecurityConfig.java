@@ -60,7 +60,7 @@ public class SecurityConfig {
                         .requestMatchers("/prod/**", "/products/add-product").hasAnyRole("ADMIN", "STAFF")
                         .requestMatchers(SWAGGER_URLS).permitAll()
                         .requestMatchers("/reset-password/generate-Otp","reset-password/reset","/products/get-image-by-id").permitAll()
-                        .requestMatchers("/admin/user/login").permitAll().anyRequest().authenticated())
+                        .requestMatchers("/orders/dispatch-orders","/admin/user/login").permitAll().anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider())
                 .exceptionHandling(e->e.authenticationEntryPoint(point))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
