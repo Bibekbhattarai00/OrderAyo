@@ -1,11 +1,11 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/orderManagement
-#    url: jdbc:postgresql://dpg-cnsr4r779t8c73a839og-a.singapore-postgres.render.com/orderayo
-    username: postgres
-#    username: orderayo_user
-    password: 1234
-#    password: Aj7PLYJ4emajF6nN7CzW2iduczX7yNYz
+#    url: jdbc:postgresql://localhost:5432/orderManagement
+    url: jdbc:postgresql://dpg-cq57rc88fa8c7382q5t0-a.singapore-postgres.render.com/orderayo_ditk
+#    username: postgres
+    username: bibek
+#    password: 1234
+    password: GiaB9tcvuHh6oXTW6Panow1iHYUjLP2a
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
