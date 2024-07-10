@@ -22,8 +22,8 @@ public class NotificationServiceImpl implements NotificationService {
     private final NotificationRepo notificationRepo;
     private final NotificationMapper notificationMapper;
 
-    //    @Scheduled(cron = "0 30 20 * * *")
-    @Scheduled(cron = "0 * * * * *")
+        @Scheduled(cron = "0 30 20 * * *")
+//    @Scheduled(cron = "0 * * * * *")
     public void popNotification() {
         List<Product> productList = productRepo.findAll();
         productList.forEach(product -> {
