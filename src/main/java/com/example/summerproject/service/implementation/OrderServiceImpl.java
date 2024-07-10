@@ -283,8 +283,8 @@ public class OrderServiceImpl implements OrdersService {
         table.addCell(amountCell);
     }
 
-//    @Scheduled(cron = "0 30 20 * * *")
-    @Scheduled(cron = "0 * * * * *")
+    @Scheduled(cron = "0 30 20 * * *")
+//    @Scheduled(cron = "0 * * * * *")
     public void sendPendingOrderReminderEmail() {
         Optional<List<OrderEntity>> pendingOrders = orderRepo.findByOrderStatus(OrderStatus.PENDING);
 

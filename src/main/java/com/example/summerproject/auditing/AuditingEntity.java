@@ -2,6 +2,7 @@ package com.example.summerproject.auditing;
 
 import com.example.summerproject.generic.entity.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.Temporal;
@@ -41,6 +42,9 @@ public abstract class AuditingEntity implements BaseEntity {
 
     @CreatedBy
     String createdBy;
+
+    @Column(nullable = false,columnDefinition = "boolean default false")
+    boolean deleted= Boolean.FALSE;
 
 
 }
